@@ -1,0 +1,28 @@
+abstract class AuthEvent {}
+
+
+class AuthRegisterRequested extends AuthEvent {
+  final String name;
+  final String email;
+  final String password;
+
+  AuthRegisterRequested({
+    required this.name,
+    required this.email,
+    required this.password,
+  });
+}
+
+
+class AuthLoginRequested extends AuthEvent {
+  final String email;
+  final String password;
+
+  AuthLoginRequested({required this.email, required this.password});
+}
+
+
+class AuthCheckStatusRequested extends AuthEvent {}
+
+
+class AuthLogoutRequested extends AuthEvent {}
