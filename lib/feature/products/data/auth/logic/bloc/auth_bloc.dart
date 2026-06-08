@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:with_api/feature/products/data/services/api/auth_service.dart';
+import 'package:with_api/feature/products/data/auth/services/api/auth_service.dart';
+import 'package:with_api/feature/products/data/auth/services/shared_pref/auth_shared.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
@@ -8,10 +9,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
 
   AuthBloc(this._authRepository) : super(AuthInitial()) {
-    // Registering event handlers
     on<AuthRegisterRequested>(_onRegisterRequested);
     on<AuthLoginRequested>(_onLoginRequested);
-    // on<AuthCheckStatusRequested>(_onCheckStatusRequested);
     on<AuthLogoutRequested>(_onLogoutRequested);
   }
 
@@ -45,6 +44,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         password: event.password,
       );
 
+      await PreferenceService.saveLoginDetails(
+        token: token,
+        email: event.email,
+      );
+
       emit(AuthAuthenticated(token));
     } catch (e) {
       emit(AuthError(e.toString().replaceAll('Exception: ', '')));
@@ -61,9 +65,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         email: event.email,
         password: event.password,
       );
-
-      // await PreferenceService.saveToken(token);
-      // await PreferenceService.saveUserEmail(event.email);
+      await PreferenceService.saveLoginDetails(
+        token: token,
+        email: event.email,
+      );
 
       emit(AuthAuthenticated(token));
     } catch (e) {
@@ -71,20 +76,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  // /// 🔄 Handle App Startup Checking
-  // Future<void> _onCheckStatusRequested(
-  //   AuthCheckStatusRequested event,
-  //   Emitter<AuthState> emit,
-  // ) async {
-  //   final token = await PreferenceService.getToken();
-  //   if (token != null && token.isNotEmpty) {
-  //     emit(AuthAuthenticated(token));
-  //   } else {
-  //     emit(AuthUnauthenticated());
-  //   }
-  // }
-
-  /// 🚪 Handle Logout
+ 
+  
   Future<void> _onLogoutRequested(
     AuthLogoutRequested event,
     Emitter<AuthState> emit,

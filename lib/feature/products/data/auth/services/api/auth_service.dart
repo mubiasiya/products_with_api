@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:with_api/feature/core/constants/api_constants.dart';
 
 class AuthRepository {
-  final String baseUrl = "https://api.escuelajs.co/graphql";
-
   Future<String> registerUser({
     required String name,
     required String email,
@@ -26,7 +25,7 @@ class AuthRepository {
     ''';
 
     final response = await http.post(
-      Uri.parse(baseUrl),
+      Uri.parse(ApiConstant.baseUrl),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'query': mutation,
@@ -70,7 +69,7 @@ class AuthRepository {
     ''';
 
     final response = await http.post(
-      Uri.parse(baseUrl),
+      Uri.parse(ApiConstant.baseUrl),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'query': loginMutation,
@@ -95,7 +94,7 @@ class AuthRepository {
     }
   }
 
- Future<bool> checkIfUserExists(String email) async {
+  Future<bool> checkIfUserExists(String email) async {
     const String query = r'''
       query GetUsers {
         users {
@@ -105,7 +104,7 @@ class AuthRepository {
     ''';
 
     final response = await http.post(
-      Uri.parse(baseUrl),
+      Uri.parse(ApiConstant.baseUrl),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'query': query}),
     );
@@ -121,7 +120,6 @@ class AuthRepository {
 
       final List users = body['data']['users'] ?? [];
 
-     
       final bool emailTaken = users.any(
         (user) =>
             user['email'].toString().toLowerCase().trim() ==
