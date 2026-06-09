@@ -41,7 +41,7 @@ class AppTheme {
       ),
 
       appBarTheme: const AppBarTheme(
-        backgroundColor: _surfaceLight,
+        backgroundColor:Colors.black,
         elevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(color: _textPrimaryLight, size: 20),

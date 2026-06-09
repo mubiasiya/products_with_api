@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:with_api/feature/products/data/auth/logic/bloc/auth_bloc.dart';
 import 'package:with_api/feature/products/data/auth/logic/bloc/auth_event.dart';
 import 'package:with_api/feature/products/data/auth/logic/bloc/auth_state.dart';
+import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/scaff_msg.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -185,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     // Button Layer
                     state is AuthLoading
-                        ? const Center(child: CircularProgressIndicator())
+                        ?  Loading()
                         : ElevatedButton(
                           onPressed: _handleLogin,
                           style: theme.elevatedButtonTheme.style,

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:with_api/feature/products/data/auth/logic/bloc/auth_bloc.dart';
 import 'package:with_api/feature/products/data/auth/logic/bloc/auth_event.dart';
-import 'package:with_api/feature/products/data/auth/logic/bloc/auth_state.dart'; // Ensure AuthState is imported
+import 'package:with_api/feature/products/data/auth/logic/bloc/auth_state.dart';
+import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
+import 'package:with_api/feature/products/data/presentation/widgets/scaff_msg.dart'; // Ensure AuthState is imported
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -55,36 +57,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: Colors.redAccent[200],
-                  content: Text(
-                    state.message,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              );
+              scaff_msg(state.message.toString(), context);
             }
             if (state is AuthAuthenticated) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: Colors.green,
-                  content: const Text(
-                    'Account successfully created!',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              );
+              scaff_msg('Account successfully created!', context);
 
               Navigator.pushNamedAndRemoveUntil(
                 context,
-                '/home',
+                '/login',
                 (route) => false,
               );
             }
@@ -278,7 +258,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 40),
 
                     state is AuthLoading
-                        ? const Center(child: CircularProgressIndicator())
+                        ? Loading()
                         : ElevatedButton(
                           onPressed: _handleRegister,
                           style: theme.elevatedButtonTheme.style,
