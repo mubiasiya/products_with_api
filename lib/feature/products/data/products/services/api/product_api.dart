@@ -19,27 +19,26 @@ class ApiService {
       queryParameters['title'] = title.trim();
     }
 
-    // 2. Add minimum price filter
+   
     if (priceMin != null) {
       queryParameters['price_min'] = priceMin.toString();
     }
 
-    // 3. Add maximum price filter
     if (priceMax != null) {
       queryParameters['price_max'] = priceMax.toString();
     }
 
-    // 4. Add category filter
+   
     if (categoryId != null) {
       queryParameters['categoryId'] = categoryId.toString();
     }
 
-    // This dynamically combines all added parameters with proper '?' and '&' syntax
+    
     final Uri finalUrl = baseUri.replace(
       queryParameters: queryParameters.isNotEmpty ? queryParameters : null,
     );
 
-    // Check your debug console to see the exact generated URL structure!
+    
     print('Generated Request URL: $finalUrl');
 
     final response = await _client.get(finalUrl);

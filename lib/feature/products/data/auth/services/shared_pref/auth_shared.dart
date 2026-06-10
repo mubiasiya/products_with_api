@@ -28,9 +28,9 @@ class PreferenceService {
     return prefs.getString(_emailKey);
   }
 
-  static Future<String?> getToken() async {
+  static Future<String> getToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_tokenKey);
+    return prefs.getString(_tokenKey)!;
   }
 
   static Future<void> clearAuthData() async {

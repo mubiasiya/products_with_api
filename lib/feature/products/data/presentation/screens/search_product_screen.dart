@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:with_api/feature/products/data/presentation/screens/productDetail_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/bottom_appBar.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/cart_icon.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/error_screen.dart';
@@ -23,13 +24,11 @@ class _ProductScreenState extends State<ProductScreen> {
 
   double _currentMinPrice = 0;
   double _currentMaxPrice = 1000;
-  // ProductSortOrder _currentSortOrder = ProductSortOrder.none;
 
- void _showFilterBottomSheet(
+  void _showFilterBottomSheet(
     BuildContext context,
     ProductLoaded currentLoadedState,
   ) {
-   
     double minPrice = (currentLoadedState.activeMinPrice ?? 0).toDouble();
     double maxPrice = (currentLoadedState.activeMaxPrice ?? 1000).toDouble();
 
@@ -90,13 +89,11 @@ class _ProductScreenState extends State<ProductScreen> {
                         ),
                       ),
                       onPressed: () {
-                       
                         setState(() {
                           _currentMinPrice = minPrice;
                           _currentMaxPrice = maxPrice;
                         });
 
-                        // Dispatch the filtering pipeline update with your custom sort logic if applicable
                         context.read<ProductBloc>().add(
                           FilterProductsEvent(
                             searchQuery: search.text,
@@ -122,12 +119,24 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   @override
+  void initState() {
+    context.read<ProductBloc>().add(
+      FilterProductsEvent(
+        searchQuery: search.text,
+        minPrice: _currentMinPrice.round(),
+        maxPrice: _currentMaxPrice.round(),
+      ),
+    );
+    
+    super.initState();
+  }
+
+  @override
   void dispose() {
     search.dispose();
     super.dispose();
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -233,7 +242,15 @@ class _ProductScreenState extends State<ProductScreen> {
                           ),
                       itemBuilder: (context, index) {
                         final product = productList[index];
-                        return productCard(product, () {}, context);
+                        return productCard(product, () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => ProductDetails(product: product),
+                            ),
+                          );
+                        }, context);
                       },
                     );
                   }
@@ -251,7 +268,12 @@ class _ProductScreenState extends State<ProductScreen> {
           if (state is ProductLoaded &&
               state.products.isNotEmpty &&
               search.text.isNotEmpty) {
-            return bottomAppBar(context);
+            return bottomAppBar(
+              context: context,
+              currentSearch: search.text,
+              minPrice: state.activeMinPrice,
+              maxPrice: state.activeMaxPrice,
+            );
           }
           return const SizedBox.shrink();
         },

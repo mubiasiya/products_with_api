@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:with_api/feature/products/data/models/product_model.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
+import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
+import 'package:with_api/feature/products/data/presentation/widgets/scaff_msg.dart';
+import 'package:with_api/feature/products/data/products/models/product_model.dart';
+import 'package:with_api/feature/products/data/wishlist/logic/cubit/wishlist_cubit.dart';
 
 Widget productCard(
   ProductModel product,
@@ -50,34 +54,30 @@ Widget productCard(
                 child: CircleAvatar(
                   backgroundColor: Colors.white.withOpacity(0.9),
                   radius: 18,
-                  child:
-                  //  BlocBuilder<WishlistCubit, WishlistState>(
-                  //   builder: (context, state) {
-                  //     bool isWishlisted = false;
-                  //     if (state is WishlistLoaded) {
-                  //       isWishlisted = state.wishlistItems.any(
-                  //         (item) => item.id == product.id,
-                  //       );
-                  //     }
-                      // return
-                       IconButton(
+                  child: BlocBuilder<WishlistCubit, WishlistState>(
+                    builder: (context, state) {
+                      bool isWishlisted = false;
+                      if (state is WishlistLoaded) {
+                        isWishlisted = state.wishlistItems.any(
+                          (item) => item.id == product.id,
+                        );
+                      }
+                      return IconButton(
                         padding: EdgeInsets.zero,
                         icon: Icon(
-                          // isWishlisted ? Icons.favorite : 
-                          Icons.favorite_border,
+                          isWishlisted ? Icons.favorite : Icons.favorite_border,
                           size: 20,
                           color: Colors.redAccent,
                         ),
                         onPressed: () {
-                          // context.read<WishlistCubit>().toggleWishlist(product);
+                          context.read<WishlistCubit>().toggleWishlist(product);
                         },
-                      )
-                
-                    
+                      );
+                    },
                   ),
                 ),
-              
-            ], // Stack children close
+              ),
+            ],
           ), // Stack close
 
           Expanded(
@@ -154,10 +154,10 @@ Widget productCard(
                         padding: EdgeInsets.zero,
                       ),
                       onPressed: () {
-                        // context.read<CartCubit>().onCartAdd(
-                        //   CartItem(product: product, qty: 1),
-                        // );
-                        // scaff_msg('Added to cart !', context);
+                        context.read<CartCubit>().onCartAdd(
+                          CartItem(product: product, qty: 1),
+                        );
+                        scaff_msg('Added to cart !', context);
                       },
                       child: const Text(
                         'Add to Cart',

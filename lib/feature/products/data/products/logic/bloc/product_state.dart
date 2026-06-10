@@ -1,4 +1,4 @@
-import 'package:with_api/feature/products/data/models/product_model.dart';
+import 'package:with_api/feature/products/data/products/models/product_model.dart';
 import 'package:with_api/feature/products/data/products/logic/bloc/product_event.dart';
 
 abstract class ProductState {}
