@@ -23,9 +23,9 @@ class PreferenceService {
     return prefs.getBool(_isLoggedInKey) ?? false;
   }
 
-  static Future<String?> getUserEmail() async {
+  static Future<String> getUserEmail() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_emailKey);
+    return prefs.getString(_emailKey)!;
   }
 
   static Future<String> getToken() async {

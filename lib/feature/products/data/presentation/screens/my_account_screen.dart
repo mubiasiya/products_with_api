@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:with_api/feature/products/data/auth/services/shared_pref/auth_shared.dart';
+import 'package:with_api/feature/products/data/cart/hive/cart_service.dart';
+import 'package:with_api/feature/products/data/wishlist/hive/wishlist_hive.dart';
 
 
 class AccountScreen extends StatelessWidget {
@@ -14,8 +16,8 @@ class AccountScreen extends StatelessWidget {
 
       await PreferenceService.clearAuthData();
 
-      // await HiveWishlistService.closeUserBox();
-      // await HiveCartService.closeUserBox();
+      await HiveWishlistService.closeUserBox();
+      await HiveCartService.closeUserBox();
       // await HiveAddressService.closeUserBox();
       // await HiveOrderService.closeUserBox();
 
@@ -137,25 +139,25 @@ class AccountScreen extends StatelessWidget {
 
         const SizedBox(height: 4),
 
-        // FutureBuilder<String>(
-        //   future:
-        //       PreferenceService.getUserEmail(), // Your Future<String> source
-        //   builder: (context, snapshot) {
-        //     String email = 'Loading...';
+        FutureBuilder<String>(
+          future:
+              PreferenceService.getUserEmail(),
+          builder: (context, snapshot) {
+            String email = 'Loading...';
 
-        //     if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-        //       email = snapshot.data!;
-        //     }
-        //     return Text(
-        //       email,
-        //       style: TextStyle(
-        //         fontSize: 14,
-        //         color: Colors.black,
-        //         fontStyle: FontStyle.italic,
-        //       ),
-        //     );
-        //   },
-        // ),
+            if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+              email = snapshot.data!;
+            }
+            return Text(
+              email,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+                fontStyle: FontStyle.italic,
+              ),
+            );
+          },
+        ),
       ],
     );
   }

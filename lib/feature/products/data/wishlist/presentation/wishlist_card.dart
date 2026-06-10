@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
+import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
 import 'package:with_api/feature/products/data/presentation/screens/productDetail_screen.dart';
 import 'package:with_api/feature/products/data/products/models/product_model.dart';
 import 'package:with_api/feature/products/data/wishlist/logic/cubit/wishlist_cubit.dart';
@@ -119,9 +121,9 @@ Widget buildWishlistCard(BuildContext context, ProductModel product) {
                         ),
                       ),
                       onPressed: () {
-                        // context.read<CartCubit>().onCartAdd(
-                        //   CartItem(product: product, qty: 1),
-                        // );
+                        context.read<CartCubit>().onCartAdd(
+                          CartItem(product: product, qty: 1),
+                        );
 
                         context.read<WishlistCubit>().toggleWishlist(product);
                       },

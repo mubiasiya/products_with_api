@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
+import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
+import 'package:with_api/feature/products/data/presentation/widgets/scaff_msg.dart';
 import 'package:with_api/feature/products/data/products/models/product_model.dart';
 import 'package:with_api/feature/products/data/wishlist/logic/cubit/wishlist_cubit.dart';
 
@@ -288,25 +291,51 @@ class _ProductDetailsState extends State<ProductDetails> {
             ],
           ),
           const SizedBox(width: 24),
-          Expanded(
-            child: SizedBox(
-              height: 50,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+          BlocBuilder<CartCubit, CartState>(
+            builder: (context, state) {
+              // 1. Safeguard checking using your dynamic CartState fields
+              // Adjust 'state.cart.items' to match whatever property name your CartModel uses to hold products
+              bool isProductInCart = state.cart.items.any(
+                (element) => element.product.id == widget.product.id,
+              );
+
+              return Expanded(
+                child: SizedBox(
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      elevation: 0,
+                    ),
+                    onPressed: () {
+                      if (isProductInCart) {
+                        Navigator.pushNamed(context, '/cart');
+                      } else {
+                        context.read<CartCubit>().onCartAdd(
+                          CartItem(product: widget.product, qty: 1),
+                        );
+                        scaff_msg('Added to cart !', context);
+                      }
+                    },
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 200),
+                      child: Text(
+                        isProductInCart ? 'Go to Cart' : 'Add to Cart',
+                        key: ValueKey<bool>(isProductInCart),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
-                  elevation: 0,
                 ),
-                onPressed: () {},
-                child: const Text(
-                  'Add to Cart',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
+              );
+            },
           ),
         ],
       ),

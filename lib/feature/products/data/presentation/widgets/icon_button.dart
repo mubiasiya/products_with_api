@@ -6,6 +6,6 @@ Widget iconButton(IconData icon, void Function() onPressed) {
     onPressed: () {
       onPressed();
     },
-    icon: Icon(icon, color: Colors.white),
+    icon: Icon(icon, color: Colors.white,size: 25,),
   );
 }

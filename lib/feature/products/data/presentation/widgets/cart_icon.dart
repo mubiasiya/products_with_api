@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-
-// import 'package:product_list/feature/logic/cubit/cart_cubit.dart'; // 💡 Replace with your exact package path
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
 
 class CartIcon extends StatelessWidget {
   const CartIcon({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // return BlocBuilder<CartCubit, CartState>(
-    //   builder: (context, state) {
+    return BlocBuilder<CartCubit, CartState>(
+      builder: (context, state) {
         int totalItems = 0;
-    //     if (state is CartUpdated) {
-    //       totalItems = state.cart.items.fold(0, (sum, item) => sum + item.qty);
-    //     }
+        if (state is CartUpdated) {
+          totalItems = state.cart.items.fold(0, (sum, item) => sum + item.qty);
+        }
 
         return Stack(
           alignment: Alignment.center,
@@ -20,7 +20,7 @@ class CartIcon extends StatelessWidget {
             IconButton(
               icon: const Icon(
                 Icons.shopping_cart_outlined,
-                size: 28,
+                size: 25,
                 color: Colors.white,
               ),
               onPressed: () {
@@ -55,7 +55,7 @@ class CartIcon extends StatelessWidget {
               ),
           ],
         );
-//       },
-//     );
+      },
+    );
   }
 }
