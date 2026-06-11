@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:with_api/feature/products/data/address/logic/cubit/address_cubit.dart';
+import 'package:with_api/feature/products/data/presentation/screens/banner.dart';
 import 'package:with_api/feature/products/data/presentation/screens/category_by_products_screen.dart';
 import 'package:with_api/feature/products/data/presentation/screens/search_product_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/cart_icon.dart';
@@ -50,20 +51,20 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   // Mock Data for Promo Ads Banners
-  final List<Map<String, dynamic>> _promoBanners = [
-    {
-      'title': 'Super Summer Sale',
-      'subtitle': 'Up to 50% OFF',
-      'tag': 'Limited Time',
-      'color': const Color(0xFF6C63FF),
-    },
-    {
-      'title': 'New Electronics Arrivals',
-      'subtitle': 'Free Shipping Included',
-      'tag': 'New',
-      'color': const Color(0xFF111111),
-    },
-  ];
+  // final List<Map<String, dynamic>> _promoBanners = [
+  //   {
+  //     'title': 'Super Summer Sale',
+  //     'subtitle': 'Up to 50% OFF',
+  //     'tag': 'Limited Time',
+  //     'color': const Color(0xFF6C63FF),
+  //   },
+  //   {
+  //     'title': 'New Electronics Arrivals',
+  //     'subtitle': 'Free Shipping Included',
+  //     'tag': 'New',
+  //     'color': const Color(0xFF111111),
+  //   },
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             _buildSearchAndFilter(),
             _buildSectionHeader('Special Offers', () {}),
-            _buildPromoCarousel(),
+           PromoCarousel(),
             buildCategorySection(Categories),
             _buildSectionHeader('Trending Products', () {}),
             // _buildProductGrid(),
@@ -260,84 +261,84 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildPromoCarousel() {
-    return SizedBox(
-      height: 160,
-      child: ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        itemCount: _promoBanners.length,
-        itemBuilder: (context, index) {
-          final banner = _promoBanners[index];
-          return Container(
-            width: MediaQuery.of(context).size.width * 0.85,
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            decoration: BoxDecoration(
-              color: banner['color'],
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Stack(
-              children: [
-                Positioned(
-                  right: -20,
-                  top: -20,
-                  child: CircleAvatar(
-                    radius: 70,
-                    backgroundColor: Colors.white.withOpacity(0.08),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          banner['tag'],
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        banner['title'],
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        banner['subtitle'],
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.8),
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
+  //  Widget _buildPromoCarousel() {
+  //   return SizedBox(
+  //     height: 160,
+  //     child: ListView.builder(
+  //       padding: const EdgeInsets.symmetric(horizontal: 12),
+  //       scrollDirection: Axis.horizontal,
+  //       physics: const BouncingScrollPhysics(),
+  //       itemCount: _promoBanners.length,
+  //       itemBuilder: (context, index) {
+  //         final banner = _promoBanners[index];
+  //         return Container(
+  //           width: MediaQuery.of(context).size.width * 0.85,
+  //           margin: const EdgeInsets.symmetric(horizontal: 4),
+  //           decoration: BoxDecoration(
+  //             color: banner['color'],
+  //             borderRadius: BorderRadius.circular(20),
+  //           ),
+  //           child: Stack(
+  //             children: [
+  //               Positioned(
+  //                 right: -20,
+  //                 top: -20,
+  //                 child: CircleAvatar(
+  //                   radius: 70,
+  //                   backgroundColor: Colors.white.withOpacity(0.08),
+  //                 ),
+  //               ),
+  //               Padding(
+  //                 padding: const EdgeInsets.all(24.0),
+  //                 child: Column(
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   mainAxisAlignment: MainAxisAlignment.center,
+  //                   children: [
+  //                     Container(
+  //                       padding: const EdgeInsets.symmetric(
+  //                         horizontal: 10,
+  //                         vertical: 4,
+  //                       ),
+  //                       decoration: BoxDecoration(
+  //                         color: Colors.white.withOpacity(0.2),
+  //                         borderRadius: BorderRadius.circular(20),
+  //                       ),
+  //                       child: Text(
+  //                         banner['tag'],
+  //                         style: const TextStyle(
+  //                           color: Colors.white,
+  //                           fontSize: 11,
+  //                           fontWeight: FontWeight.bold,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                     const SizedBox(height: 12),
+  //                     Text(
+  //                       banner['title'],
+  //                       style: const TextStyle(
+  //                         color: Colors.white,
+  //                         fontSize: 20,
+  //                         fontWeight: FontWeight.bold,
+  //                       ),
+  //                     ),
+  //                     const SizedBox(height: 4),
+  //                     Text(
+  //                       banner['subtitle'],
+  //                       style: TextStyle(
+  //                         color: Colors.white.withOpacity(0.8),
+  //                         fontSize: 13,
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 
   Widget buildCategorySection(List<Category> categories) {
     if (categories.isEmpty) return const SizedBox.shrink();
@@ -373,7 +374,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         SizedBox(
-          height: 165, // Slightly increased height for enhanced layout spacing
+          height: 165,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),

@@ -32,7 +32,7 @@ Widget buildRelatedProductsSection(
           itemBuilder: (context, index) {
             final product = relatedProducts[index];
 
-            // Safe image fallback in case Platzi data has empty array slots
+          
             final String fallbackImage =
                 product.images.isNotEmpty
                     ? product.images.first
@@ -40,8 +40,8 @@ Widget buildRelatedProductsSection(
 
             return GestureDetector(
               onTap: () {
-                // 🟢 Clicking an item seamlessly refreshes detail views!
-                Navigator.pushReplacement(
+               
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ProductDetails(product: product),
@@ -86,7 +86,7 @@ Widget buildRelatedProductsSection(
                         color:
                             Theme.of(
                               context,
-                            ).colorScheme.primary, // 🟢 Works now!
+                            ).colorScheme.primary, 
                         fontWeight: FontWeight.bold,
                         fontSize: 12,
                       ),
