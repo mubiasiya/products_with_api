@@ -76,4 +76,20 @@ class ApiService {
       throw Exception('Failed to connect to related products endpoint: $e');
     }
   }
+
+  Future<String> fetchRandomProducts() async {
+    try {
+      final response = await http.get(
+        Uri.parse('${ApiEndpoints.products}?offset=0&limit=30'),
+      );
+
+      if (response.statusCode == 200) {
+        return response.body;
+      } else {
+        throw Exception('Server error code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to load random items: $e');
+    }
+  }
 }

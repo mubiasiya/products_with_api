@@ -23,37 +23,37 @@ class ProductRepository {
     } catch (e) {
       print(e);
       throw Exception('Repository failing to process catalog data: $e');
-      
     }
   }
 
-  Future<List<ProductModel>> fetchRelatedProducts(
-    String slug
-  ) async {
-   
-  try {
+  Future<List<ProductModel>> fetchRelatedProducts(String slug) async {
+    try {
       final String rawJson = await _apiService.getRelatedProducts(slug);
-       final List<ProductModel> productList = productModelFromJson(rawJson);
+      final List<ProductModel> productList = productModelFromJson(rawJson);
       return productList;
     } catch (e) {
-     
       throw Exception('Repository failing to process related data: $e');
     }
   }
-  Future<List<ProductModel>> catwiseProducts(
-    int categoryId
-  ) async {
-   
-  try {
+
+  Future<List<ProductModel>> catwiseProducts(int categoryId) async {
+    try {
       final String rawJson = await _apiService.getCateWiseProducts(categoryId);
-       final List<ProductModel> productList = productModelFromJson(rawJson);
+      final List<ProductModel> productList = productModelFromJson(rawJson);
       return productList;
     } catch (e) {
-     
       throw Exception('Repository failing to process related data: $e');
     }
   }
+
+  Future<List<ProductModel>> fetchtrendingProducts() async {
+    try {
+      final String rawJson = await _apiService.fetchRandomProducts();
+      final List<ProductModel> productList = productModelFromJson(rawJson);
+      productList.shuffle();
+      return productList.take(4).toList();
+    } catch (e) {
+      throw Exception('Repository failing to process related data: $e');
+    }
   }
-
-  
-
+}
