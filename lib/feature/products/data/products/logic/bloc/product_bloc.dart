@@ -8,8 +8,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final ProductRepository _productRepository;
 
   ProductBloc(this._productRepository) : super(ProductInitial()) {
-    // on<LoadProductsEvent>(_onLoadProducts);
     on<FilterProductsEvent>(_onFilterProducts);
+    on<FetchRelatedProductsEvent>(_onFetchRelatedProducts);
   }
 
   Future<void> _onFilterProducts(
@@ -58,7 +58,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             }).toList();
       }
 
-     
       if (currentSort == ProductSortOrder.lowToHigh) {
         filteredProducts.sort((a, b) => a.price.compareTo(b.price));
       } else if (currentSort == ProductSortOrder.highToLow) {
@@ -76,6 +75,28 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       );
     } catch (e) {
       emit(ProductError(e.toString()));
+    }
+  }
+
+  Future<void> _onFetchRelatedProducts(
+    FetchRelatedProductsEvent event,
+    Emitter<ProductState> emit,
+  ) async {
+   
+    if (state is! ProductLoaded) return;
+
+    final currentState = state as ProductLoaded;
+
+    try {
+    
+      final List<ProductModel> related = await _productRepository
+          .fetchRelatedProducts(event.slug);
+
+     
+      emit(currentState.copyWith(relatedProducts: related));
+    } catch (_) {
+     
+      emit(currentState.copyWith(relatedProducts: const []));
     }
   }
 }

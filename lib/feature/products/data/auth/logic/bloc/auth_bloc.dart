@@ -83,7 +83,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
-    // await PreferenceService.clearAuthData(); // Clean up shared preferences
+    await PreferenceService.clearAuthData(); 
     emit(AuthUnauthenticated());
   }
 }

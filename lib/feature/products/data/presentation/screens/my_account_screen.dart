@@ -3,7 +3,6 @@ import 'package:with_api/feature/products/data/auth/services/shared_pref/auth_sh
 import 'package:with_api/feature/products/data/cart/hive/cart_service.dart';
 import 'package:with_api/feature/products/data/wishlist/hive/wishlist_hive.dart';
 
-
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
 
@@ -140,8 +139,7 @@ class AccountScreen extends StatelessWidget {
         const SizedBox(height: 4),
 
         FutureBuilder<String>(
-          future:
-              PreferenceService.getUserEmail(),
+          future: PreferenceService.getUserEmail(),
           builder: (context, snapshot) {
             String email = 'Loading...';
 

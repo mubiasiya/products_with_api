@@ -11,34 +11,25 @@ class ApiService {
     int? priceMax,
     int? categoryId,
   }) async {
-    final Uri baseUri = Uri.parse(ApiEndpoints.products);
-    final Map<String, String> queryParameters = {};
-
-   
+    String baseUri = '${ApiEndpoints.products}?';
     if (title != null && title.trim().isNotEmpty) {
-      queryParameters['title'] = title.trim();
+      baseUri += 'title=$title';
     }
 
-   
     if (priceMin != null) {
-      queryParameters['price_min'] = priceMin.toString();
+      baseUri += '&price_min=$priceMin';
     }
 
     if (priceMax != null) {
-      queryParameters['price_max'] = priceMax.toString();
+      baseUri += '&price_max=$priceMax';
     }
 
-   
     if (categoryId != null) {
-      queryParameters['categoryId'] = categoryId.toString();
+      baseUri += '&categoryId=$categoryId';
     }
 
-    
-    final Uri finalUrl = baseUri.replace(
-      queryParameters: queryParameters.isNotEmpty ? queryParameters : null,
-    );
+    final Uri finalUrl = Uri.parse(baseUri);
 
-    
     print('Generated Request URL: $finalUrl');
 
     final response = await _client.get(finalUrl);
@@ -47,6 +38,24 @@ class ApiService {
       return response.body;
     } else {
       throw Exception('Server error: HTTP ${response.statusCode}');
+    }
+  }
+
+  Future<String> getRelatedProducts(String slug) async {
+    String baseUri = ApiEndpoints.products;
+    final url = Uri.parse('$baseUri/slug/$slug/related');
+    print(url);
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        return response.body;
+      } else {
+        throw Exception('Server returned status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to connect to related products endpoint: $e');
     }
   }
 }

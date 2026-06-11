@@ -2,11 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:with_api/feature/products/data/address/hive/address_hive.dart';
+import 'package:with_api/feature/products/data/address/logic/cubit/address_cubit.dart';
 import 'package:with_api/feature/products/data/auth/logic/bloc/auth_bloc.dart';
 import 'package:with_api/feature/products/data/auth/logic/bloc/auth_event.dart';
 import 'package:with_api/feature/products/data/auth/logic/bloc/auth_state.dart';
+import 'package:with_api/feature/products/data/auth/services/shared_pref/auth_shared.dart';
+import 'package:with_api/feature/products/data/cart/hive/cart_service.dart';
+import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/scaff_msg.dart';
+import 'package:with_api/feature/products/data/wishlist/hive/wishlist_hive.dart';
+import 'package:with_api/feature/products/data/wishlist/logic/cubit/wishlist_cubit.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -49,18 +56,39 @@ class _LoginScreenState extends State<LoginScreen> {
           isDark ? const Color(0xFF0F172A) : const Color(0xFFFBFBFD),
       body: SafeArea(
         child: BlocConsumer<AuthBloc, AuthState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is AuthError) {
               scaff_msg(state.message, context);
             }
+
             if (state is AuthAuthenticated) {
               scaff_msg('Successfully logged in', context);
 
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/home',
-                (route) => false,
-              );
+              try {
+                String userId = await PreferenceService.getUserId();
+
+                if (userId.isNotEmpty) {
+                  await HiveWishlistService.openUserBox(userId);
+                  await HiveCartService.openUserBox(userId);
+                  await HiveAddressService.openUserBox(userId);
+
+                  if (context.mounted) {
+                    context.read<WishlistCubit>().loadWishlist();
+                    context.read<CartCubit>().loadInitialCart();
+                    context.read<AddressCubit>().loadAddresses();
+                  }
+                }
+              } catch (e) {
+                debugPrint("Error loading user storage on log-in: $e");
+              }
+
+              if (context.mounted) {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/home',
+                  (route) => false,
+                );
+              }
             }
           },
           builder: (context, state) {
@@ -186,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     // Button Layer
                     state is AuthLoading
-                        ?  Loading()
+                        ? Loading()
                         : ElevatedButton(
                           onPressed: _handleLogin,
                           style: theme.elevatedButtonTheme.style,
@@ -234,3 +262,5 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
+class OrderCubit {}

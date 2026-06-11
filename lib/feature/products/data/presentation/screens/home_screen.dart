@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:with_api/feature/products/data/address/logic/cubit/address_cubit.dart';
 import 'package:with_api/feature/products/data/presentation/screens/search_product_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/cart_icon.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/icon_button.dart';
@@ -98,50 +100,81 @@ class _HomeScreenState extends State<HomeScreen> {
       centerTitle: false,
       title: Row(
         children: [
-          const Icon(Icons.location_on_rounded, color: Colors.black, size: 22),
+          // const Icon(Icons.location_on_rounded, color: Colors.white, size: 22),
+            Icon(Icons.delivery_dining, size: 18, color: Colors.white),
           const SizedBox(width: 6),
 
-          // Expanded(
-          //   child:
+          Expanded(
+            child: BlocBuilder<AddressCubit, AddressState>(
+              builder: (context, state) {
+                if (state is AddressLoaded) {
+                  if (state.addresses.isEmpty) {
+                    return Text('');
+                  }
 
-          //    BlocBuilder<AddressCubit, AddressState>(
-          //     builder: (context, state) {
-          //       if (state is AddressLoaded) {
-          //         if (state.addresses.isEmpty) {
-          //           return Text('');
-          //         }
+                  final defaultAddress =
+                      state.addresses.where((address) {
+                        return address.isDefault == true;
+                      }).toList();
 
-          //         final primaryAddress = state.addresses.first;
-
-          //         return Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           mainAxisSize: MainAxisSize.min,
-          //           children: [
-          //             Text(
-          //               'Deliver to',
-          //               style: TextStyle(
-          //                 fontSize: 11,
-          //                 color: Colors.white,
-          //                 fontWeight: FontWeight.w500,
-          //               ),
-          //             ),
-          //             Text(
-          //               ' ${primaryAddress.title} , ${primaryAddress.fullAddress}',
-          //               maxLines: 1,
-          //               overflow: TextOverflow.ellipsis,
-          //               style: TextStyle(
-          //                 fontSize: 13,
-          //                 color: Colors.grey.shade500,
-          //                 fontWeight: FontWeight.bold,
-          //               ),
-          //             ),
-          //           ],
-          //         );
-          //       }
-          //       return const SizedBox.shrink(); // Using shrink container over empty string widget
-          //     },
-          //   ),
-          // ),
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                    
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'Deliver to'.toUpperCase(),
+                              style: TextStyle(
+                                fontSize: 10,
+                                letterSpacing: 1.1,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            RichText(
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              text: TextSpan(
+                                style:  TextStyle(
+                                  fontSize: 13,
+                                  height: 1.4,
+                                   color: Colors.grey.shade500,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: '${defaultAddress[0].fullName} ',
+                                    // style: TextStyle(
+                                    //   fontWeight: FontWeight.bold,
+                                    //   color: Colors.grey.shade500,
+                                    // ),
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        '• ${defaultAddress[0].fullAddressLine}',
+                                    // style: TextStyle(
+                                    //   fontWeight: FontWeight.normal,
+                                    //   color: Colors.grey.shade500,
+                                    // ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }
+                return const SizedBox.shrink(); // Using shrink container over empty string widget
+              },
+            ),
+          ),
         ],
       ),
       actions: [

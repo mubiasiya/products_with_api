@@ -86,6 +86,8 @@ class AuthRepository {
       }
 
       final loginData = body['data']['login'];
+      print('token');
+      print(loginData['access_token'].toString());
       return loginData['access_token'].toString();
     } else {
       throw Exception(
@@ -132,3 +134,4 @@ class AuthRepository {
     }
   }
 }
+

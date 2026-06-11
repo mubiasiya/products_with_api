@@ -46,7 +46,7 @@ class AppTheme {
         centerTitle: true,
         iconTheme: IconThemeData(color: _textPrimaryLight, size: 20),
         titleTextStyle: TextStyle(
-          color: _textPrimaryLight,
+          color: Colors.white,
           fontWeight: FontWeight.w800,
           fontSize: 20,
           letterSpacing: -0.5,

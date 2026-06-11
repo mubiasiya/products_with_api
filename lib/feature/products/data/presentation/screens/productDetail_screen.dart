@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
+import 'package:with_api/feature/products/data/presentation/screens/related_product_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/scaff_msg.dart';
+import 'package:with_api/feature/products/data/products/logic/bloc/product_bloc.dart';
+import 'package:with_api/feature/products/data/products/logic/bloc/product_event.dart';
+import 'package:with_api/feature/products/data/products/logic/bloc/product_state.dart';
 import 'package:with_api/feature/products/data/products/models/product_model.dart';
 import 'package:with_api/feature/products/data/wishlist/logic/cubit/wishlist_cubit.dart';
 
@@ -23,6 +27,10 @@ class _ProductDetailsState extends State<ProductDetails> {
   void initState() {
     super.initState();
     _pageController = PageController();
+    context.read<ProductBloc>().add(
+      FetchRelatedProductsEvent(widget.product.slug),
+    );
+    print(widget.product.slug);
   }
 
   @override
@@ -239,6 +247,19 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ),
                         ),
                         const SizedBox(height: 24),
+
+                        BlocBuilder<ProductBloc, ProductState>(
+                          builder: (context, state) {
+                            if (state is ProductLoaded &&
+                                state.relatedProducts.isNotEmpty) {
+                              return buildRelatedProductsSection(
+                                context,
+                                state.relatedProducts,
+                              );
+                            }
+                            return const SizedBox.shrink();
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -293,8 +314,6 @@ class _ProductDetailsState extends State<ProductDetails> {
           const SizedBox(width: 24),
           BlocBuilder<CartCubit, CartState>(
             builder: (context, state) {
-              // 1. Safeguard checking using your dynamic CartState fields
-              // Adjust 'state.cart.items' to match whatever property name your CartModel uses to hold products
               bool isProductInCart = state.cart.items.any(
                 (element) => element.product.id == widget.product.id,
               );

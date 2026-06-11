@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PreferenceService {
   PreferenceService._();
 
+  static const String _keyUserId = 'user_id';
   static const String _tokenKey = "auth_token";
   static const String _isLoggedInKey = "is_logged_in";
   static const String _emailKey = "user_email";
@@ -12,7 +13,12 @@ class PreferenceService {
     required String token,
     required String email,
   }) async {
+    
+    final String generatedUserId = 'usr_$email';
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    
+    
+    await prefs.setString(_keyUserId, generatedUserId);
     await prefs.setString(_tokenKey, token);
     await prefs.setBool(_isLoggedInKey, true);
     await prefs.setString(_emailKey, email.trim().toLowerCase());
@@ -26,6 +32,11 @@ class PreferenceService {
   static Future<String> getUserEmail() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(_emailKey)!;
+  }
+  
+  static Future<String> getUserId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_keyUserId) ?? '';
   }
 
   static Future<String> getToken() async {

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:with_api/feature/core/theme/app_theme.dart';
+import 'package:with_api/feature/products/data/address/hive/address_hive.dart';
+import 'package:with_api/feature/products/data/address/logic/cubit/address_cubit.dart';
+import 'package:with_api/feature/products/data/address/presentation/address_screen.dart';
 import 'package:with_api/feature/products/data/auth/logic/bloc/auth_bloc.dart';
 import 'package:with_api/feature/products/data/auth/presentation/login_screen.dart';
 import 'package:with_api/feature/products/data/auth/presentation/regist_screen.dart';
@@ -29,13 +32,13 @@ void main() async {
 
   if (loggedIn) {
     try {
-      userId = await PreferenceService.getToken();
+      userId = await PreferenceService.getUserId();
       print(userId);
 
       if (userId.isNotEmpty) {
         await HiveWishlistService.openUserBox(userId);
         await HiveCartService.openUserBox(userId);
-        // await HiveAddressService.openUserBox(userId);
+        await HiveAddressService.openUserBox(userId);
         // await HiveOrderService.openUserBox(userId);
       }
     } catch (e) {
@@ -61,6 +64,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(create: (context) => WishlistCubit()),
         BlocProvider(create: (context) => CartCubit()),
+        BlocProvider(create: (context) => AddressCubit()),
       ],
       child: MaterialApp(
         title: 'Product List App',
@@ -69,7 +73,8 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.system,
-        initialRoute: isLoggedIn ? '/home' : '/login',
+        initialRoute:isLoggedIn? '/home' : '/login',
+        
 
         routes: {
           '/login': (context) => const LoginScreen(),
@@ -78,6 +83,7 @@ class MyApp extends StatelessWidget {
           '/account': (context) => const AccountScreen(),
           '/wishlist': (context) => const WishlistScreen(),
           '/cart': (context) => const CartScreen(),
+          '/address': (context) => const AddressScreen(),
         },
       ),
     );

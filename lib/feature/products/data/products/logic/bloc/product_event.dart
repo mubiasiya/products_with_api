@@ -17,3 +17,8 @@ class FilterProductsEvent extends ProductEvent {
     this.sortOrder,
   });
 }
+
+class FetchRelatedProductsEvent extends ProductEvent {
+  final String slug;
+   FetchRelatedProductsEvent(this.slug);
+}
