@@ -10,6 +10,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductBloc(this._productRepository) : super(ProductInitial()) {
     on<FilterProductsEvent>(_onFilterProducts);
     on<FetchRelatedProductsEvent>(_onFetchRelatedProducts);
+    on<FetchCatWiseProductsEvent>(_onFetchCatWiseProducts);
   }
 
   Future<void> _onFilterProducts(
@@ -82,21 +83,39 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     FetchRelatedProductsEvent event,
     Emitter<ProductState> emit,
   ) async {
-   
     if (state is! ProductLoaded) return;
 
     final currentState = state as ProductLoaded;
 
     try {
-    
       final List<ProductModel> related = await _productRepository
           .fetchRelatedProducts(event.slug);
 
-     
       emit(currentState.copyWith(relatedProducts: related));
     } catch (_) {
-     
       emit(currentState.copyWith(relatedProducts: const []));
+    }
+  }
+
+  Future<void> _onFetchCatWiseProducts(
+    FetchCatWiseProductsEvent event,
+    Emitter<ProductState> emit,
+  ) async {
+    emit(ProductLoading());
+
+    try {
+      final List<ProductModel> catProducts = await _productRepository
+          .catwiseProducts(event.cateId);
+
+      emit(
+        ProductLoaded(
+          products: catProducts,
+          activeSearchQuery: '',
+          activeSortOrder: ProductSortOrder.none,
+        ),
+      );
+    } catch (e) {
+      emit(ProductError(e.toString()));
     }
   }
 }

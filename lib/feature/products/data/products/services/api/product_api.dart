@@ -58,4 +58,22 @@ class ApiService {
       throw Exception('Failed to connect to related products endpoint: $e');
     }
   }
+
+  Future<String> getCateWiseProducts(int categoryId) async {
+    String baseUri = ApiEndpoints.categories;
+    final url = Uri.parse('$baseUri/$categoryId/products');
+    print(url);
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        return response.body;
+      } else {
+        throw Exception('Server returned status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to connect to related products endpoint: $e');
+    }
+  }
 }

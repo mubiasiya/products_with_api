@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:with_api/feature/products/data/address/logic/cubit/address_cubit.dart';
+import 'package:with_api/feature/products/data/presentation/screens/category_by_products_screen.dart';
 import 'package:with_api/feature/products/data/presentation/screens/search_product_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/cart_icon.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/icon_button.dart';
+import 'package:with_api/feature/products/data/products/models/category_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,46 +15,38 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Map<String, dynamic>> _categories = [
-    {'name': 'All', 'icon': Icons.grid_view_rounded, 'apiValue': ''},
-
-    {
-      'name': 'Electronics',
-      'icon': Icons.devices_rounded,
-      'apiValue': 'electronics',
-    },
-
-    {'name': 'Jewelry', 'icon': Icons.diamond_rounded, 'apiValue': 'jewelery'},
-
-    {
-      'name': 'Men\'s Wear',
-      'icon': Icons.man_rounded,
-      'apiValue': "men's clothing",
-    },
-
-    {
-      'name': 'Women\'s Wear',
-      'icon': Icons.woman_rounded,
-      'apiValue': 'women\'s clothing',
-    },
-
-    {
-      'name': 'Shoes & Kicks',
-      'icon': Icons.ice_skating_rounded,
-      'apiValue': 'shoes',
-    },
-
-    {
-      'name': 'Beauty & Care',
-      'icon': Icons.face_retouching_natural_rounded,
-      'apiValue': 'beauty',
-    },
-
-    {
-      'name': 'Groceries',
-      'icon': Icons.local_grocery_store_rounded,
-      'apiValue': 'groceries',
-    },
+  // ignore: non_constant_identifier_names
+  final List<Category> Categories = [
+    Category(
+      id: 1,
+      name: "Clothes",
+      slug: "clothes",
+      image: "https://i.imgur.com/QkIa5tT.jpeg",
+    ),
+    Category(
+      id: 2,
+      name: "Electronics",
+      slug: "electronics",
+      image: "https://i.imgur.com/ZANVnHE.jpeg",
+    ),
+    Category(
+      id: 3,
+      name: "Furniture",
+      slug: "furniture",
+      image: "https://i.imgur.com/Qphac99.jpeg",
+    ),
+    Category(
+      id: 4,
+      name: "Shoes",
+      slug: "shoes",
+      image: "https://i.imgur.com/qNOjJje.jpeg",
+    ),
+    Category(
+      id: 5,
+      name: "Miscellaneous",
+      slug: "miscellaneous",
+      image: "https://i.imgur.com/BG8J0Fj.jpg",
+    ),
   ];
 
   // Mock Data for Promo Ads Banners
@@ -84,8 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _buildSearchAndFilter(),
             _buildSectionHeader('Special Offers', () {}),
             _buildPromoCarousel(),
-            _buildSectionHeader('Categories', () {}),
-            _buildCategoryList(),
+            buildCategorySection(Categories),
             _buildSectionHeader('Trending Products', () {}),
             // _buildProductGrid(),
             const SizedBox(height: 24), // Bottom structural padding
@@ -100,10 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
       centerTitle: false,
       title: Row(
         children: [
-          // const Icon(Icons.location_on_rounded, color: Colors.white, size: 22),
-            Icon(Icons.delivery_dining, size: 18, color: Colors.white),
-          const SizedBox(width: 6),
-
           Expanded(
             child: BlocBuilder<AddressCubit, AddressState>(
               builder: (context, state) {
@@ -120,7 +109,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                    
+                      Icon(
+                        Icons.delivery_dining,
+                        size: 18,
+                        color: Colors.white,
+                      ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Column(
@@ -128,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              'Deliver to'.toUpperCase(),
+                              'DELIVER TO',
                               style: TextStyle(
                                 fontSize: 10,
                                 letterSpacing: 1.1,
@@ -141,26 +134,18 @@ class _HomeScreenState extends State<HomeScreen> {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               text: TextSpan(
-                                style:  TextStyle(
+                                style: TextStyle(
                                   fontSize: 13,
                                   height: 1.4,
-                                   color: Colors.grey.shade500,
+                                  color: Colors.grey.shade500,
                                 ),
                                 children: [
                                   TextSpan(
                                     text: '${defaultAddress[0].fullName} ',
-                                    // style: TextStyle(
-                                    //   fontWeight: FontWeight.bold,
-                                    //   color: Colors.grey.shade500,
-                                    // ),
                                   ),
                                   TextSpan(
                                     text:
                                         '• ${defaultAddress[0].fullAddressLine}',
-                                    // style: TextStyle(
-                                    //   fontWeight: FontWeight.normal,
-                                    //   color: Colors.grey.shade500,
-                                    // ),
                                   ),
                                 ],
                               ),
@@ -354,54 +339,185 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildCategoryList() {
-    return SizedBox(
-      height: 44,
-      child: ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        itemCount: _categories.length,
-        itemBuilder: (context, index) {
-          final category = _categories[index];
-          return GestureDetector(
-            onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => cate_wise(cat: category['apiValue']),
-              //   ),
-              // );
-            },
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: Colors.black),
+  Widget buildCategorySection(List<Category> categories) {
+    if (categories.isEmpty) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'CHOOSE COLLECTION',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 1.5,
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
+                ),
               ),
-              child: Row(
-                children: [
-                  Icon(category['icon'], color: Colors.white, size: 18),
-                  const SizedBox(width: 8),
-                  Text(
-                    category['name'],
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
+              const SizedBox(height: 4),
+              const Text(
+                'Our Collections',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -0.8,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 165, // Slightly increased height for enhanced layout spacing
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.only(left: 24.0, top: 24.0, bottom: 8.0),
+            itemCount: categories.length,
+            itemBuilder: (context, index) {
+              final category = categories[index];
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => ProductsByCategoryPage(
+                            categoryId: category.id,
+                            categoryName: category.name,
+                          ),
                     ),
+                  );
+                },
+                child: Container(
+                  width: 115,
+                  margin: const EdgeInsets.only(right: 20.0),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      // 🌟 1. Base Premium Text Card with subtle gradient & shadow
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        top: 28,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [Colors.white, Colors.grey.shade50],
+                            ),
+                            borderRadius: BorderRadius.circular(24),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.04),
+                                blurRadius: 12,
+                                offset: const Offset(0, 8),
+                              ),
+                            ],
+                            border: Border.all(
+                              color: Colors.grey.shade100,
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  bottom: 16.0,
+                                  left: 10.0,
+                                  right: 10.0,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        category.name,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w800,
+                                          color: Colors.black,
+                                          letterSpacing: -0.2,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 2),
+                                    Icon(
+                                      Icons.keyboard_arrow_right_rounded,
+                                      size: 14,
+                                      color: Colors.grey.shade400,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      // 🌟 2. Luxury Floating Circle Frame with Drop Shadow
+                      Positioned(
+                        top: 0,
+                        left: 22,
+                        right: 22,
+                        child: Container(
+                          height: 70,
+                          width: 70,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.primary.withOpacity(0.12),
+                                blurRadius: 14,
+                                offset: const Offset(0, 8),
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.all(
+                            3.5,
+                          ), // Inner layout ring gap
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.grey.shade100,
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            child: Image.network(
+                              category.image,
+                              fit: BoxFit.cover,
+                              errorBuilder:
+                                  (_, __, ___) => Icon(
+                                    Icons.image_not_supported_outlined,
+                                    color: Colors.grey.shade400,
+                                    size: 20,
+                                  ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
-
   //   Widget _buildProductGrid() {
   //     final List<ProductModel> products = [
   //       ProductModel(

@@ -40,6 +40,19 @@ class ProductRepository {
       throw Exception('Repository failing to process related data: $e');
     }
   }
+  Future<List<ProductModel>> catwiseProducts(
+    int categoryId
+  ) async {
+   
+  try {
+      final String rawJson = await _apiService.getCateWiseProducts(categoryId);
+       final List<ProductModel> productList = productModelFromJson(rawJson);
+      return productList;
+    } catch (e) {
+     
+      throw Exception('Repository failing to process related data: $e');
+    }
+  }
   }
 
   

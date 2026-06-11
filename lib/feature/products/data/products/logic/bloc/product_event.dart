@@ -2,8 +2,6 @@ enum ProductSortOrder { none, lowToHigh, highToLow }
 
 abstract class ProductEvent {}
 
-class LoadProductsEvent extends ProductEvent {}
-
 class FilterProductsEvent extends ProductEvent {
   final String? searchQuery;
   final int? minPrice;
@@ -20,5 +18,11 @@ class FilterProductsEvent extends ProductEvent {
 
 class FetchRelatedProductsEvent extends ProductEvent {
   final String slug;
-   FetchRelatedProductsEvent(this.slug);
+  FetchRelatedProductsEvent(this.slug);
+}
+
+class FetchCatWiseProductsEvent extends ProductEvent {
+  final int cateId;
+
+  FetchCatWiseProductsEvent({required this.cateId});
 }

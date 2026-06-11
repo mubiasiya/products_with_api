@@ -6,9 +6,10 @@ import 'package:with_api/feature/products/data/auth/services/shared_pref/auth_sh
 part 'address_state.dart';
 
 class AddressCubit extends Cubit<AddressState> {
-  AddressCubit() : super(AddressInitial());
+  AddressCubit() : super(AddressInitial()) {
+    loadAddresses();
+  }
 
-  
   Future<void> loadAddresses() async {
     emit(AddressLoading());
     try {
@@ -25,14 +26,12 @@ class AddressCubit extends Cubit<AddressState> {
     }
   }
 
-  
   Future<void> addAddress(AddressModel newAddress) async {
     if (state is! AddressLoaded) return;
     final currentItems = List<AddressModel>.from(
       (state as AddressLoaded).addresses,
     );
 
-    
     final bool shouldBeDefault = currentItems.isEmpty;
     final processedAddress = newAddress.copyWith(isDefault: shouldBeDefault);
 
@@ -42,7 +41,6 @@ class AddressCubit extends Cubit<AddressState> {
     await HiveAddressService.saveAddress(currentItems);
   }
 
-  
   Future<void> updateAddress(AddressModel updatedAddress) async {
     if (state is! AddressLoaded) return;
     final currentItems = List<AddressModel>.from(
@@ -70,7 +68,6 @@ class AddressCubit extends Cubit<AddressState> {
           if (address.id == id) {
             return address.copyWith(isDefault: true);
           } else {
-           
             return address.copyWith(isDefault: false);
           }
         }).toList();
@@ -79,14 +76,12 @@ class AddressCubit extends Cubit<AddressState> {
     await HiveAddressService.saveAddress(updatedItems);
   }
 
-  
   Future<void> deleteAddress(String id) async {
     if (state is! AddressLoaded) return;
     final currentItems = List<AddressModel>.from(
       (state as AddressLoaded).addresses,
     );
 
-  
     final bool wasDefault = currentItems.any(
       (element) => element.id == id && element.isDefault,
     );
