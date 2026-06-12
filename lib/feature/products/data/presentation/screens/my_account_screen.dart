@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:with_api/feature/products/data/address/hive/address_hive.dart';
 import 'package:with_api/feature/products/data/auth/services/shared_pref/auth_shared.dart';
 import 'package:with_api/feature/products/data/cart/hive/cart_service.dart';
+import 'package:with_api/feature/products/data/orders/hive/order_service.dart';
 import 'package:with_api/feature/products/data/wishlist/hive/wishlist_hive.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -17,8 +19,8 @@ class AccountScreen extends StatelessWidget {
 
       await HiveWishlistService.closeUserBox();
       await HiveCartService.closeUserBox();
-      // await HiveAddressService.closeUserBox();
-      // await HiveOrderService.closeUserBox();
+      await HiveAddressService.closeUserBox();
+      await HiveOrderService.closeUserBox();
 
       if (context.mounted) {
         Navigator.of(

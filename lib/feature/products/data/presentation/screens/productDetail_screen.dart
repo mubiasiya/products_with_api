@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
 import 'package:with_api/feature/products/data/presentation/screens/related_product_screen.dart';
+import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/scaff_msg.dart';
 import 'package:with_api/feature/products/data/products/logic/bloc/product_bloc.dart';
 import 'package:with_api/feature/products/data/products/logic/bloc/product_event.dart';
@@ -51,6 +52,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
@@ -61,7 +63,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 Icons.arrow_back_ios_new,
                 color: Colors.black,
                 size: 18,
-              ), // Styled arrow
+              ),
             ),
           ),
         ),
@@ -249,34 +251,24 @@ class _ProductDetailsState extends State<ProductDetails> {
                         const SizedBox(height: 24),
                         BlocBuilder<ProductBloc, ProductState>(
                           builder: (context, state) {
-                            if (state is ProductDetailsLoaded) {
-                              if (state.relatedProducts.isEmpty) {
-                                return const Center(child: SizedBox.shrink());
+                            if (state is ProductLoaded) {
+                              if (state.isLoadingRelated) {
+                                return  Loading();
                               }
+
+                              if (state.relatedProducts.isEmpty) {
+                                return const SizedBox.shrink();
+                              }
+
                               return buildRelatedProductsSection(
                                 context,
                                 state.relatedProducts,
                               );
                             }
 
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
+                            return Loading();
                           },
                         ),
-
-                        // BlocBuilder<ProductBloc, ProductState>(
-                        //   builder: (context, state) {
-                        //     if (state is ProductLoaded &&
-                        //         state.relatedProducts.isNotEmpty) {
-                        //       return buildRelatedProductsSection(
-                        //         context,
-                        //         state.relatedProducts,
-                        //       );
-                        //     }
-                        //     return const SizedBox.shrink();
-                        //   },
-                        // ),
                       ],
                     ),
                   ),

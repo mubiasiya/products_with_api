@@ -4,10 +4,11 @@ import 'package:with_api/feature/products/data/address/logic/cubit/address_cubit
 import 'package:with_api/feature/products/data/address/models/address_model.dart';
 import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_model.dart';
+import 'package:with_api/feature/products/data/orders/logic/bloc/order_bloc.dart';
+import 'package:with_api/feature/products/data/orders/models/order_model.dart';
 import 'package:with_api/feature/products/data/presentation/screens/success_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/back_button.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
-
 
 class CheckoutScreen extends StatefulWidget {
   final CartModel cart;
@@ -58,13 +59,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     
       appBar: AppBar(
-       
         elevation: 0,
         leading: back_button(context),
-        title:Text('Checkout'),
-      
+        title: Text('Checkout'),
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -79,13 +77,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               },
             ),
 
-         
             BlocConsumer<AddressCubit, AddressState>(
               listener: (context, state) {
                 if (state is AddressLoaded &&
                     !_hasSetInitialAddress &&
                     state.addresses.isNotEmpty) {
-                  
                   final defaultIdx = state.addresses.indexWhere(
                     (addr) => addr.isDefault,
                   );
@@ -184,8 +180,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   Widget _buildAddressList(List<AddressModel> savedAddresses) {
     return SizedBox(
-      height:
-          145, 
+      height: 145,
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         scrollDirection:
@@ -526,23 +521,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         final chosenAddress =
                             addressState.addresses[_selectedAddressIndex];
 
-                        final purchasedProducts =
-                            widget.cart.items
-                                .map((item) => item.product)
-                                .toList();
+                        final purchasedProducts = widget.cart.items;
 
-                        // final newOrder = OrderModel(
-                        //   orderId: finalizedOrderId,
-                        //   dateTime: DateTime.now(),
-                        //   items: purchasedProducts,
-                        //   totalAmount: widget.tot_Amount,
-                        //   paymentMethod:
-                        //       _paymentMethods[_selectedPaymentIndex]['name'],
-                        //   deliveryAddress: chosenAddress,
-                        // );
+                        final newOrder = OrderModel(
+                          orderId: finalizedOrderId,
+                          dateTime: DateTime.now(),
+                          items: purchasedProducts,
+                          totalAmount: widget.tot_Amount,
+                          paymentMethod:
+                              _paymentMethods[_selectedPaymentIndex]['name'],
+                          deliveryAddress: chosenAddress,
+                        );
 
                         context.read<CartCubit>().onCartClear();
-                        // context.read<OrderCubit>().onSaveOrders(newOrder);
+                        context.read<OrderBloc>().add(SaveOrderEvent(newOrder));
 
                         Navigator.push(
                           context,

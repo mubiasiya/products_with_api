@@ -10,6 +10,8 @@ import 'package:with_api/feature/products/data/auth/logic/bloc/auth_state.dart';
 import 'package:with_api/feature/products/data/auth/services/shared_pref/auth_shared.dart';
 import 'package:with_api/feature/products/data/cart/hive/cart_service.dart';
 import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
+import 'package:with_api/feature/products/data/orders/hive/order_service.dart';
+import 'package:with_api/feature/products/data/orders/logic/bloc/order_bloc.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/scaff_msg.dart';
 import 'package:with_api/feature/products/data/wishlist/hive/wishlist_hive.dart';
@@ -71,11 +73,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   await HiveWishlistService.openUserBox(userId);
                   await HiveCartService.openUserBox(userId);
                   await HiveAddressService.openUserBox(userId);
+                  await HiveOrderService.openUserBox(userId);
 
                   if (context.mounted) {
                     context.read<WishlistCubit>().loadWishlist();
                     context.read<CartCubit>().loadInitialCart();
                     context.read<AddressCubit>().loadAddresses();
+                    context.read<OrderBloc>().add(LoadOrdersEvent());
+                    
                   }
                 }
               } catch (e) {

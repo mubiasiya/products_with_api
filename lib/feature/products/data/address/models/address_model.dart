@@ -35,7 +35,7 @@ class AddressModel {
       '$flatNumber, $buildingName',
       area,
       if (landmark?.trim().isNotEmpty ?? false) 'Landmark: $landmark',
-      emirate.toUpperCase(), // Emirates usually look better in caps
+      emirate.toUpperCase(), 
     ].where((line) => line.trim().isNotEmpty).join('\n');
   }
 

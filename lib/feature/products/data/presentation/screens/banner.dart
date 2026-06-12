@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
 
 class PromoCarousel extends StatefulWidget {
   const PromoCarousel({super.key});
@@ -46,7 +47,7 @@ class _PromoCarouselState extends State<PromoCarousel> {
         future: _bannersFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Loading();
           }
 
           if (snapshot.hasError) {

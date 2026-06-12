@@ -1,5 +1,5 @@
-import 'package:with_api/feature/products/data/products/models/product_model.dart';
 import 'package:with_api/feature/products/data/products/logic/bloc/product_event.dart';
+import 'package:with_api/feature/products/data/products/models/product_model.dart';
 
 abstract class ProductState {}
 
@@ -7,13 +7,21 @@ class ProductInitial extends ProductState {}
 
 class ProductLoading extends ProductState {}
 
+class ProductError extends ProductState {
+  final String message;
+  ProductError(this.message);
+}
+
+// Combine all loaded data into this single state class
 class ProductLoaded extends ProductState {
-  final List<ProductModel> products;
-  final List<ProductModel> relatedProducts;
+  final List<ProductModel> products; // Holds search results
+  final List<ProductModel>
+  relatedProducts; // Holds detail page related products
   final String activeSearchQuery;
   final int? activeMinPrice;
   final int? activeMaxPrice;
   final ProductSortOrder activeSortOrder;
+  final bool isLoadingRelated; // Helpful for detail page spinners
 
   ProductLoaded({
     required this.products,
@@ -21,35 +29,28 @@ class ProductLoaded extends ProductState {
     required this.activeSearchQuery,
     this.activeMinPrice,
     this.activeMaxPrice,
-    this.activeSortOrder = ProductSortOrder.none,
+    required this.activeSortOrder,
+    this.isLoadingRelated = false,
   });
 
-
-ProductLoaded copyWith({
-  List<ProductModel>? products,
-  List<ProductModel>? relatedProducts,
-  String? activeSearchQuery,
-  int? activeMinPrice,
-  int? activeMaxPrice,
-  ProductSortOrder? activeSortOrder,
-}) {
-  return ProductLoaded(
-    products: products ?? this.products,
-    relatedProducts: relatedProducts ?? this.relatedProducts,
-    activeSearchQuery: activeSearchQuery ?? this.activeSearchQuery,
-    activeMinPrice: activeMinPrice ?? this.activeMinPrice,
-    activeMaxPrice: activeMaxPrice ?? this.activeMaxPrice,
-    activeSortOrder: activeSortOrder ?? this.activeSortOrder,
-  );
-}
-}
-
-class ProductDetailsLoaded extends ProductState {
-  final List<ProductModel> relatedProducts;
-  ProductDetailsLoaded({required this.relatedProducts});
-}
-
-class ProductError extends ProductState {
-  final String message;
-  ProductError(this.message);
+  // CRITICAL: This allows updating related products without losing the search products
+  ProductLoaded copyWith({
+    List<ProductModel>? products,
+    List<ProductModel>? relatedProducts,
+    String? activeSearchQuery,
+    int? activeMinPrice,
+    int? activeMaxPrice,
+    ProductSortOrder? activeSortOrder,
+    bool? isLoadingRelated,
+  }) {
+    return ProductLoaded(
+      products: products ?? this.products,
+      relatedProducts: relatedProducts ?? this.relatedProducts,
+      activeSearchQuery: activeSearchQuery ?? this.activeSearchQuery,
+      activeMinPrice: activeMinPrice ?? this.activeMinPrice,
+      activeMaxPrice: activeMaxPrice ?? this.activeMaxPrice,
+      activeSortOrder: activeSortOrder ?? this.activeSortOrder,
+      isLoadingRelated: isLoadingRelated ?? this.isLoadingRelated,
+    );
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:with_api/feature/products/data/presentation/screens/category_product_card.dart';
+import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
 import 'package:with_api/feature/products/data/products/logic/bloc/product_bloc.dart';
 import 'package:with_api/feature/products/data/products/logic/bloc/product_event.dart';
 import 'package:with_api/feature/products/data/products/logic/bloc/product_state.dart';
@@ -58,9 +59,7 @@ class _ProductsByCategoryPageState extends State<ProductsByCategoryPage> {
       body: BlocBuilder<ProductBloc, ProductState>(
         builder: (context, state) {
           if (state is ProductLoading) {
-            return const Center(
-              child: CircularProgressIndicator(strokeWidth: 3),
-            );
+            return Loading();
           }
 
           if (state is ProductLoaded) {
@@ -90,7 +89,6 @@ class _ProductsByCategoryPageState extends State<ProductsByCategoryPage> {
               );
             }
 
-            
             return GridView.builder(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
@@ -99,8 +97,7 @@ class _ProductsByCategoryPageState extends State<ProductsByCategoryPage> {
               physics: const BouncingScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio:
-                    0.66,
+                childAspectRatio: 0.66,
                 crossAxisSpacing: 14,
                 mainAxisSpacing: 14,
               ),

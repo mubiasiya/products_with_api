@@ -9,6 +9,7 @@ import 'package:with_api/feature/products/data/presentation/screens/productDetai
 import 'package:with_api/feature/products/data/presentation/screens/search_product_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/cart_icon.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/icon_button.dart';
+import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/scaff_msg.dart';
 import 'package:with_api/feature/products/data/products/models/category_model.dart';
 import 'package:with_api/feature/products/data/products/models/product_model.dart';
@@ -455,9 +456,9 @@ class _HomeScreenState extends State<HomeScreen> {
       future: ProductRepository(ApiService()).fetchtrendingProducts(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Padding(
+          return  Padding(
             padding: EdgeInsets.symmetric(vertical: 40.0),
-            child: Center(child: CircularProgressIndicator()),
+            child: Loading(),
           );
         } else if (snapshot.hasError) {
           return Center(
