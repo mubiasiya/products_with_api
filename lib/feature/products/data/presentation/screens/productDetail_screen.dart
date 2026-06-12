@@ -247,19 +247,36 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ),
                         ),
                         const SizedBox(height: 24),
-
                         BlocBuilder<ProductBloc, ProductState>(
                           builder: (context, state) {
-                            if (state is ProductLoaded &&
-                                state.relatedProducts.isNotEmpty) {
+                            if (state is ProductDetailsLoaded) {
+                              if (state.relatedProducts.isEmpty) {
+                                return const Center(child: SizedBox.shrink());
+                              }
                               return buildRelatedProductsSection(
                                 context,
                                 state.relatedProducts,
                               );
                             }
-                            return const SizedBox.shrink();
+
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
                           },
                         ),
+
+                        // BlocBuilder<ProductBloc, ProductState>(
+                        //   builder: (context, state) {
+                        //     if (state is ProductLoaded &&
+                        //         state.relatedProducts.isNotEmpty) {
+                        //       return buildRelatedProductsSection(
+                        //         context,
+                        //         state.relatedProducts,
+                        //       );
+                        //     }
+                        //     return const SizedBox.shrink();
+                        //   },
+                        // ),
                       ],
                     ),
                   ),

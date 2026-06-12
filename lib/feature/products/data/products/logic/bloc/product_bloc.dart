@@ -79,23 +79,21 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     }
   }
 
-  Future<void> _onFetchRelatedProducts(
+   Future<void> _onFetchRelatedProducts(
     FetchRelatedProductsEvent event,
     Emitter<ProductState> emit,
   ) async {
-    if (state is! ProductLoaded) return;
-
-    final currentState = state as ProductLoaded;
-
+   
     try {
       final List<ProductModel> related = await _productRepository
           .fetchRelatedProducts(event.slug);
 
-      emit(currentState.copyWith(relatedProducts: related));
+      emit(ProductDetailsLoaded(relatedProducts: related));
     } catch (_) {
-      emit(currentState.copyWith(relatedProducts: const []));
+      emit(ProductDetailsLoaded(relatedProducts: const []));
     }
   }
+
 
   Future<void> _onFetchCatWiseProducts(
     FetchCatWiseProductsEvent event,
@@ -118,4 +116,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       emit(ProductError(e.toString()));
     }
   }
+
+ 
 }

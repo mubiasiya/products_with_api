@@ -32,7 +32,6 @@ Widget buildRelatedProductsSection(
           itemBuilder: (context, index) {
             final product = relatedProducts[index];
 
-          
             final String fallbackImage =
                 product.images.isNotEmpty
                     ? product.images.first
@@ -40,13 +39,13 @@ Widget buildRelatedProductsSection(
 
             return GestureDetector(
               onTap: () {
-               
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ProductDetails(product: product),
                   ),
                 );
+               
               },
               child: Container(
                 width: 140,
@@ -83,10 +82,7 @@ Widget buildRelatedProductsSection(
                     Text(
                       '\$${product.price}',
                       style: TextStyle(
-                        color:
-                            Theme.of(
-                              context,
-                            ).colorScheme.primary, 
+                        color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.bold,
                         fontSize: 12,
                       ),

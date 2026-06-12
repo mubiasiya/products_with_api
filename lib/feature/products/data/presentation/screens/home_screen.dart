@@ -280,6 +280,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 10,),
               Text(
                 'CHOOSE COLLECTION',
                 style: TextStyle(
@@ -493,6 +494,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             return GestureDetector(
               onTap: () {
+                
                 Navigator.push(
                   context,
                   MaterialPageRoute(

@@ -44,6 +44,10 @@ ProductLoaded copyWith({
 }
 }
 
+class ProductDetailsLoaded extends ProductState {
+  final List<ProductModel> relatedProducts;
+  ProductDetailsLoaded({required this.relatedProducts});
+}
 
 class ProductError extends ProductState {
   final String message;
