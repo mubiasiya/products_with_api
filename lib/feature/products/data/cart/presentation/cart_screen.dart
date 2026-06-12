@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
 import 'package:with_api/feature/products/data/cart/presentation/cart_bottom.dart';
+import 'package:with_api/feature/products/data/presentation/screens/checkout_screen.dart';
+import 'package:with_api/feature/products/data/presentation/screens/productDetail_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/icon_button.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
 
@@ -82,12 +84,12 @@ class _CartScreenState extends State<CartScreen> {
   Widget _buildCartItemCard(BuildContext context, CartItem item) {
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => cartProductDetails(product: item.product),
-        //   ),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductDetails(product: item.product),
+          ),
+        );
       },
       child: Card(
         margin: const EdgeInsets.only(bottom: 14),
@@ -115,19 +117,26 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   Positioned(
-                    top: -21,
-                    right: 55,
-                    child: IconButton(
-                      constraints: const BoxConstraints(),
-                      padding: const EdgeInsets.all(4),
-                      onPressed: () {
-                        context.read<CartCubit>().onCartItemDelete(item);
-                      },
-
-                      icon: const Icon(
-                        Icons.clear,
-                        color: Colors.black,
-                        size: 24,
+                    top:
+                        -20, // Changed from -26 to keep it inside the clickable area
+                    right: 60, // Adjusted to sit nicely in the corner
+                    child: CircleAvatar(
+                      radius:
+                          16, // Added explicit radius to keep the circle tight
+                      backgroundColor:
+                          Colors.grey[200], // Fixed: 200 instead of 150
+                      child: IconButton(
+                        constraints: const BoxConstraints(),
+                        padding: const EdgeInsets.all(4),
+                        onPressed: () {
+                          context.read<CartCubit>().onCartItemDelete(item);
+                        },
+                        icon: const Icon(
+                          Icons.clear,
+                          color: Colors.black,
+                          size:
+                              16, // Slightly reduced to fit nicely inside a small circle
+                        ),
                       ),
                     ),
                   ),
@@ -292,18 +301,18 @@ class _CartScreenState extends State<CartScreen> {
                 elevation: 0,
               ),
               onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder:
-                //         (context) => CheckoutScreen(
-                //           cart: state.cart,
-                //           subtotal: state.cart.totalCartPrice,
-                //           vat: state.cart.vat,
-                //           tot_Amount: state.cart.grandTotal,
-                //         ),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) => CheckoutScreen(
+                          cart: state.cart,
+                          subtotal: state.cart.totalCartPrice,
+                          vat: state.cart.vat,
+                          tot_Amount: state.cart.grandTotal,
+                        ),
+                  ),
+                );
               },
               child: const Text(
                 'Proceed to buy',
