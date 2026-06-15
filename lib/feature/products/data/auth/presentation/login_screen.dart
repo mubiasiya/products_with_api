@@ -1,5 +1,3 @@
-// lib/feature/products/presentation/auth/login_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:with_api/feature/products/data/address/hive/address_hive.dart';
@@ -15,7 +13,7 @@ import 'package:with_api/feature/products/data/orders/logic/bloc/order_bloc.dart
 import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/scaff_msg.dart';
 import 'package:with_api/feature/products/data/wishlist/hive/wishlist_hive.dart';
-import 'package:with_api/feature/products/data/wishlist/logic/cubit/wishlist_cubit.dart';
+import 'package:with_api/feature/products/data/wishlist/logic/bloc/wishlist_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -76,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   await HiveOrderService.openUserBox(userId);
 
                   if (context.mounted) {
-                    context.read<WishlistCubit>().loadWishlist();
+                    context.read<WishlistBloc>().add(LoadWishlistEvent());
                     context.read<CartBloc>().add(LoadCartEvent());
                     context.read<AddressBloc>().add(LoadAddressesEvent());
                     context.read<OrderBloc>().add(LoadOrdersEvent());
@@ -217,7 +215,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 40),
 
-                    // Button Layer
                     state is AuthLoading
                         ? Loading()
                         : ElevatedButton(
@@ -227,11 +224,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                     const SizedBox(height: 30),
 
-                    // Link back to Sign Up screen
                     Center(
                       child: GestureDetector(
                         onTap: () {
-                          // Clean navigation step to jump over to register screen
                           Navigator.pushNamed(context, '/register');
                         },
                         child: RichText(

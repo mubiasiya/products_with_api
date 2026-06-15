@@ -4,7 +4,8 @@ import 'package:with_api/feature/products/data/cart/logic/bloc/cart_bloc.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/scaff_msg.dart';
 import 'package:with_api/feature/products/data/products/models/product_model.dart';
-import 'package:with_api/feature/products/data/wishlist/logic/cubit/wishlist_cubit.dart';
+import 'package:with_api/feature/products/data/wishlist/logic/bloc/wishlist_bloc.dart';
+
 
 Widget productCard(
   ProductModel product,
@@ -54,7 +55,7 @@ Widget productCard(
                 child: CircleAvatar(
                   backgroundColor: Colors.white.withOpacity(0.9),
                   radius: 18,
-                  child: BlocBuilder<WishlistCubit, WishlistState>(
+                  child: BlocBuilder<WishlistBloc, WishlistState>(
                     builder: (context, state) {
                       bool isWishlisted = false;
                       if (state is WishlistLoaded) {
@@ -70,7 +71,7 @@ Widget productCard(
                           color: Colors.redAccent,
                         ),
                         onPressed: () {
-                          context.read<WishlistCubit>().toggleWishlist(product);
+                          context.read<WishlistBloc>().add(ToggleWishlistEvent(product));
                         },
                       );
                     },

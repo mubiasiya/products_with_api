@@ -5,7 +5,8 @@ import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart'
 import 'package:with_api/feature/products/data/presentation/screens/productDetail_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/scaff_msg.dart';
 import 'package:with_api/feature/products/data/products/models/product_model.dart';
-import 'package:with_api/feature/products/data/wishlist/logic/cubit/wishlist_cubit.dart';
+import 'package:with_api/feature/products/data/wishlist/logic/bloc/wishlist_bloc.dart';
+
 
 class CategoryProductCard extends StatelessWidget {
   final ProductModel product;
@@ -62,7 +63,7 @@ class CategoryProductCard extends StatelessWidget {
                   Positioned(
                     top: 10,
                     right: 10,
-                    child: BlocBuilder<WishlistCubit, WishlistState>(
+                    child: BlocBuilder<WishlistBloc, WishlistState>(
                       builder: (blocContext, state) {
                         bool isWishlisted = false;
                         if (state is WishlistLoaded) {
@@ -73,9 +74,7 @@ class CategoryProductCard extends StatelessWidget {
                         }
                         return GestureDetector(
                           onTap: () {
-                            context.read<WishlistCubit>().toggleWishlist(
-                              product,
-                            );
+                            context.read<WishlistBloc>().add(ToggleWishlistEvent(product));
                           },
                           child: Container(
                             padding: const EdgeInsets.all(6),

@@ -23,7 +23,7 @@ import 'package:with_api/feature/products/data/products/logic/bloc/product_bloc.
 import 'package:with_api/feature/products/data/products/repositories/product_repo.dart';
 import 'package:with_api/feature/products/data/products/services/api/product_api.dart';
 import 'package:with_api/feature/products/data/wishlist/hive/wishlist_hive.dart';
-import 'package:with_api/feature/products/data/wishlist/logic/cubit/wishlist_cubit.dart';
+import 'package:with_api/feature/products/data/wishlist/logic/bloc/wishlist_bloc.dart';
 import 'package:with_api/feature/products/data/wishlist/presentation/wishlist_screen.dart';
 
 void main() async {
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => ProductBloc(ProductRepository(ApiService())),
         ),
-        BlocProvider(create: (context) => WishlistCubit()),
+        BlocProvider(create: (context) => WishlistBloc()),
         BlocProvider(create: (context) => CartBloc()),
         BlocProvider(create: (context) => AddressBloc()),
         BlocProvider(create: (context) => OrderBloc()),

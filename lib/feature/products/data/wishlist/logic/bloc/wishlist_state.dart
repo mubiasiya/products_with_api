@@ -1,4 +1,4 @@
-part of 'wishlist_cubit.dart';
+part of 'wishlist_bloc.dart';
 
 @immutable
 sealed class WishlistState {}
@@ -13,8 +13,9 @@ final class WishlistLoaded extends WishlistState {
   WishlistLoaded({required this.wishlistItems});
 }
 
-final class wishlistError extends WishlistState {
-  final String errormsg;
+final class WishlistError extends WishlistState {
+  
+  final String errorMsg; 
 
-  wishlistError({required this.errormsg});
+  WishlistError({required this.errorMsg});
 }

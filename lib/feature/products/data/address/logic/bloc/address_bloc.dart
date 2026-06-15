@@ -8,14 +8,13 @@ part 'address_state.dart';
 
 class AddressBloc extends Bloc<AddressEvent, AddressState> {
   AddressBloc() : super(AddressInitial()) {
-    // Register your Event Handlers
+   
     on<LoadAddressesEvent>(_onLoadAddresses);
     on<AddAddressEvent>(_onAddAddress);
     on<UpdateAddressEvent>(_onUpdateAddress);
     on<SetDefaultAddressEvent>(_onSetDefaultAddress);
     on<DeleteAddressEvent>(_onDeleteAddress);
 
-    // Trigger initial load on creation
     add(LoadAddressesEvent());
   }
 

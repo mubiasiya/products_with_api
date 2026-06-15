@@ -15,7 +15,8 @@ import 'package:with_api/feature/products/data/products/models/category_model.da
 import 'package:with_api/feature/products/data/products/models/product_model.dart';
 import 'package:with_api/feature/products/data/products/repositories/product_repo.dart';
 import 'package:with_api/feature/products/data/products/services/api/product_api.dart';
-import 'package:with_api/feature/products/data/wishlist/logic/cubit/wishlist_cubit.dart';
+import 'package:with_api/feature/products/data/wishlist/logic/bloc/wishlist_bloc.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -316,7 +317,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      // 🌟 1. Base Premium Text Card with subtle gradient & shadow
                       Positioned(
                         bottom: 0,
                         left: 0,
@@ -537,7 +537,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: CircleAvatar(
                               radius: 16,
                               backgroundColor: Colors.white.withOpacity(0.9),
-                              child: BlocBuilder<WishlistCubit, WishlistState>(
+                              child: BlocBuilder<WishlistBloc, WishlistState>(
                                 builder: (context, state) {
                                   bool isWishlisted = false;
                                   if (state is WishlistLoaded) {
@@ -548,8 +548,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   return IconButton(
                                     onPressed: () {
                                       context
-                                          .read<WishlistCubit>()
-                                          .toggleWishlist(product);
+                                          .read<WishlistBloc>().add(ToggleWishlistEvent(product));
+                                          
                                     },
                                     icon: Icon(
                                       isWishlisted

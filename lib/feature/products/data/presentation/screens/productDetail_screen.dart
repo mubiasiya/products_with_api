@@ -9,7 +9,7 @@ import 'package:with_api/feature/products/data/products/logic/bloc/product_bloc.
 import 'package:with_api/feature/products/data/products/logic/bloc/product_event.dart';
 import 'package:with_api/feature/products/data/products/logic/bloc/product_state.dart';
 import 'package:with_api/feature/products/data/products/models/product_model.dart';
-import 'package:with_api/feature/products/data/wishlist/logic/cubit/wishlist_cubit.dart';
+import 'package:with_api/feature/products/data/wishlist/logic/bloc/wishlist_bloc.dart';
 
 class ProductDetails extends StatefulWidget {
   final ProductModel product;
@@ -72,7 +72,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             padding: const EdgeInsets.all(8.0),
             child: CircleAvatar(
               backgroundColor: Colors.white.withOpacity(0.9),
-              child: BlocBuilder<WishlistCubit, WishlistState>(
+              child: BlocBuilder<WishlistBloc, WishlistState>(
                 builder: (context, state) {
                   bool isWishlisted = false;
                   if (state is WishlistLoaded) {
@@ -82,8 +82,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                   }
                   return IconButton(
                     onPressed: () {
-                      context.read<WishlistCubit>().toggleWishlist(
-                        widget.product,
+                      context.read<WishlistBloc>().add(
+                        ToggleWishlistEvent(widget.product),
                       );
                     },
                     icon: Icon(

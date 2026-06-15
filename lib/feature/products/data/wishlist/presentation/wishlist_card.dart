@@ -4,7 +4,7 @@ import 'package:with_api/feature/products/data/cart/logic/bloc/cart_bloc.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
 import 'package:with_api/feature/products/data/presentation/screens/productDetail_screen.dart';
 import 'package:with_api/feature/products/data/products/models/product_model.dart';
-import 'package:with_api/feature/products/data/wishlist/logic/cubit/wishlist_cubit.dart';
+import 'package:with_api/feature/products/data/wishlist/logic/bloc/wishlist_bloc.dart';
 
 Widget buildWishlistCard(BuildContext context, ProductModel product) {
   return GestureDetector(
@@ -57,7 +57,9 @@ Widget buildWishlistCard(BuildContext context, ProductModel product) {
                       color: Colors.black,
                     ),
                     onPressed: () {
-                      context.read<WishlistCubit>().toggleWishlist(product);
+                      context.read<WishlistBloc>().add(
+                        ToggleWishlistEvent(product),
+                      );
                     },
                   ),
                 ),
@@ -125,7 +127,9 @@ Widget buildWishlistCard(BuildContext context, ProductModel product) {
                           AddToCartEvent(CartItem(product: product, qty: 1)),
                         );
 
-                        context.read<WishlistCubit>().toggleWishlist(product);
+                        context.read<WishlistBloc>().add(
+                          ToggleWishlistEvent(product),
+                        );
                       },
                       child: const Text(
                         'Add to Cart',

@@ -1,6 +1,5 @@
 class AddressModel {
   final String id;
-
   final String fullName;
   final String mobileNumber;
   final String emirate;
@@ -12,7 +11,6 @@ class AddressModel {
 
   AddressModel({
     required this.id,
-
     required this.fullName,
     required this.mobileNumber,
     required this.emirate,
@@ -21,28 +19,20 @@ class AddressModel {
     required this.flatNumber,
     this.landmark,
     this.isDefault = false,
-  }) {
-    assert(fullName.trim().isNotEmpty, "Full Name is required.");
-    assert(mobileNumber.trim().isNotEmpty, "Mobile Number is required.");
-    assert(emirate.trim().isNotEmpty, "Emirate is required.");
-    assert(area.trim().isNotEmpty, "Area is required.");
-    assert(buildingName.trim().isNotEmpty, "Building Name is required.");
-    assert(flatNumber.trim().isNotEmpty, "Flat/Villa Number is required.");
-  }
+  });
 
   String get fullAddressLine {
     return [
       '$flatNumber, $buildingName',
       area,
       if (landmark?.trim().isNotEmpty ?? false) 'Landmark: $landmark',
-      emirate.toUpperCase(), 
+      emirate.toUpperCase(),
     ].where((line) => line.trim().isNotEmpty).join('\n');
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-
       'fullName': fullName,
       'mobileNumber': mobileNumber,
       'emirate': emirate,
@@ -57,7 +47,6 @@ class AddressModel {
   factory AddressModel.fromMap(Map<String, dynamic> map) {
     return AddressModel(
       id: map['id'] as String? ?? '',
-
       fullName: map['fullName'] as String? ?? '',
       mobileNumber: map['mobileNumber'] as String? ?? '',
       emirate: map['emirate'] as String? ?? '',
@@ -83,7 +72,6 @@ class AddressModel {
   }) {
     return AddressModel(
       id: id ?? this.id,
-
       fullName: fullName ?? this.fullName,
       mobileNumber: mobileNumber ?? this.mobileNumber,
       emirate: emirate ?? this.emirate,

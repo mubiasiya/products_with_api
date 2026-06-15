@@ -6,6 +6,10 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> scaff_msg(
   BuildContext context,
 ) {
   return ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text(msg), behavior: SnackBarBehavior.floating),
+    SnackBar(
+      content: Text(msg),
+      behavior: SnackBarBehavior.floating,
+      duration: const Duration(seconds: 2),
+    ),
   );
 }
