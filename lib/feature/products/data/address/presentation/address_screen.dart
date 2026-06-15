@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:with_api/feature/products/data/address/logic/cubit/address_cubit.dart';
+import 'package:with_api/feature/products/data/address/logic/bloc/address_bloc.dart';
 import 'package:with_api/feature/products/data/address/models/address_model.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/back_button.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
@@ -16,7 +16,7 @@ class _AddressScreenState extends State<AddressScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<AddressCubit>().loadAddresses();
+    // context.read<AddressBloc>().add(LoadAddressesEvent());
   }
 
   @override
@@ -30,7 +30,7 @@ class _AddressScreenState extends State<AddressScreen> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: BlocBuilder<AddressCubit, AddressState>(
+      body: BlocBuilder<AddressBloc, AddressState>(
         builder: (context, state) {
           if (state is AddressLoading) {
             return Loading();
@@ -78,7 +78,7 @@ class _AddressScreenState extends State<AddressScreen> {
           if (state is AddressError) {
             return Center(
               child: Text(
-                state.error_msg,
+                state.errorMsg,
                 style: const TextStyle(color: Colors.red),
               ),
             );
@@ -135,7 +135,6 @@ class _AddressScreenState extends State<AddressScreen> {
         borderRadius: BorderRadius.circular(16),
         child: Stack(
           children: [
-        
             if (address.isDefault)
               Positioned(
                 left: 0,
@@ -220,9 +219,9 @@ class _AddressScreenState extends State<AddressScreen> {
                       if (!address.isDefault)
                         TextButton.icon(
                           onPressed:
-                              () => context
-                                  .read<AddressCubit>()
-                                  .setDefaultAddress(address.id),
+                              () => context.read<AddressBloc>().add(
+                                SetDefaultAddressEvent(address.id),
+                              ),
                           icon: const Icon(
                             Icons.check_circle_outline_rounded,
                             size: 16,
@@ -303,7 +302,9 @@ class _AddressScreenState extends State<AddressScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  context.read<AddressCubit>().deleteAddress(addressId);
+                  context.read<AddressBloc>().add(
+                    DeleteAddressEvent(addressId),
+                  );
                   Navigator.pop(context);
                 },
                 style: TextButton.styleFrom(
@@ -371,14 +372,12 @@ class _AddressFormWidgetState extends State<_AddressFormWidget> {
 
   void _saveForm() async {
     if (_formKey.currentState!.validate()) {
-      final cubit = context.read<AddressCubit>();
-     
+      final bloc = context.read<AddressBloc>();
 
       if (widget.addressToEdit == null) {
-        // Create new address entry payload structure
         final newAddress = AddressModel(
           id: DateTime.now().millisecondsSinceEpoch.toString(),
-         
+
           fullName: _nameController.text.trim(),
           mobileNumber: _mobileController.text.trim(),
           emirate: _emirateController.text.trim(),
@@ -392,9 +391,9 @@ class _AddressFormWidgetState extends State<_AddressFormWidget> {
           isDefault:
               false, // First item handling can be added in the Cubit level
         );
-        cubit.addAddress(newAddress);
+
+        bloc.add(AddAddressEvent(newAddress));
       } else {
-        // Modify active existing entity block
         final updatedAddress = widget.addressToEdit!.copyWith(
           fullName: _nameController.text.trim(),
           mobileNumber: _mobileController.text.trim(),
@@ -407,7 +406,8 @@ class _AddressFormWidgetState extends State<_AddressFormWidget> {
                   ? null
                   : _landmarkController.text.trim(),
         );
-        cubit.updateAddress(updatedAddress);
+
+        bloc.add(UpdateAddressEvent(updatedAddress));
       }
 
       if (mounted) Navigator.pop(context);

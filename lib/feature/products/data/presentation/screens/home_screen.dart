@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:with_api/feature/products/data/address/logic/cubit/address_cubit.dart';
+import 'package:with_api/feature/products/data/address/logic/bloc/address_bloc.dart';
 import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
 import 'package:with_api/feature/products/data/presentation/screens/banner.dart';
@@ -59,22 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
   ];
 
-  // Mock Data for Promo Ads Banners
-  // final List<Map<String, dynamic>> _promoBanners = [
-  //   {
-  //     'title': 'Super Summer Sale',
-  //     'subtitle': 'Up to 50% OFF',
-  //     'tag': 'Limited Time',
-  //     'color': const Color(0xFF6C63FF),
-  //   },
-  //   {
-  //     'title': 'New Electronics Arrivals',
-  //     'subtitle': 'Free Shipping Included',
-  //     'tag': 'New',
-  //     'color': const Color(0xFF111111),
-  //   },
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
       title: Row(
         children: [
           Expanded(
-            child: BlocBuilder<AddressCubit, AddressState>(
+            child: BlocBuilder<AddressBloc, AddressState>(
               builder: (context, state) {
                 if (state is AddressLoaded) {
                   if (state.addresses.isEmpty) {
@@ -281,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10,),
+              SizedBox(height: 10),
               Text(
                 'CHOOSE COLLECTION',
                 style: TextStyle(
@@ -456,7 +440,7 @@ class _HomeScreenState extends State<HomeScreen> {
       future: ProductRepository(ApiService()).fetchtrendingProducts(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return  Padding(
+          return Padding(
             padding: EdgeInsets.symmetric(vertical: 40.0),
             child: Loading(),
           );
@@ -495,7 +479,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
             return GestureDetector(
               onTap: () {
-                
                 Navigator.push(
                   context,
                   MaterialPageRoute(

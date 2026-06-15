@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:with_api/feature/products/data/address/logic/cubit/address_cubit.dart';
+import 'package:with_api/feature/products/data/address/logic/bloc/address_bloc.dart';
 import 'package:with_api/feature/products/data/address/models/address_model.dart';
 import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_model.dart';
@@ -53,7 +53,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<AddressCubit>().loadAddresses();
+    context.read<AddressBloc>().add(LoadAddressesEvent());
   }
 
   @override
@@ -77,7 +77,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               },
             ),
 
-            BlocConsumer<AddressCubit, AddressState>(
+            BlocConsumer<AddressBloc, AddressState>(
               listener: (context, state) {
                 if (state is AddressLoaded &&
                     !_hasSetInitialAddress &&
@@ -446,7 +446,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   Widget _buildBottomPayButton() {
-    final addressState = context.watch<AddressCubit>().state;
+    final addressState = context.watch<AddressBloc>().state;
 
     bool hasValidAddress = false;
     List<AddressModel> currentAddresses = [];
@@ -509,7 +509,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               onPressed:
                   isButtonEnabled
                       ? () async {
-                        final addressState = context.read<AddressCubit>().state;
+                        final addressState = context.read<AddressBloc>().state;
                         if (addressState is! AddressLoaded ||
                             addressState.addresses.isEmpty) {
                           return;

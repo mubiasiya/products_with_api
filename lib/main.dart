@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:with_api/feature/core/theme/app_theme.dart';
 import 'package:with_api/feature/products/data/address/hive/address_hive.dart';
-import 'package:with_api/feature/products/data/address/logic/cubit/address_cubit.dart';
+import 'package:with_api/feature/products/data/address/logic/bloc/address_bloc.dart';
 import 'package:with_api/feature/products/data/address/presentation/address_screen.dart';
 import 'package:with_api/feature/products/data/auth/logic/bloc/auth_bloc.dart';
 import 'package:with_api/feature/products/data/auth/presentation/login_screen.dart';
@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(create: (context) => WishlistCubit()),
         BlocProvider(create: (context) => CartCubit()),
-        BlocProvider(create: (context) => AddressCubit()),
+        BlocProvider(create: (context) => AddressBloc()),
         BlocProvider(create: (context) => OrderBloc()),
       ],
       child: MaterialApp(

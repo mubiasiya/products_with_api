@@ -1,8 +1,4 @@
-part of 'address_cubit.dart';
-
-
-
-
+part of 'address_bloc.dart';
 
 sealed class AddressState {}
 
@@ -15,8 +11,8 @@ class AddressLoaded extends AddressState {
   AddressLoaded(this.addresses);
 }
 
-class AddressError extends AddressState{
-final String error_msg;
+class AddressError extends AddressState {
+  final String errorMsg; // Standardized to camelCase
 
-  AddressError({required this.error_msg});
+  AddressError({required this.errorMsg});
 }

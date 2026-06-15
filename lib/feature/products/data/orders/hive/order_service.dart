@@ -23,8 +23,10 @@ class HiveOrderService {
         _box.get('order_history', defaultValue: []) ?? [];
 
     return rawOrders.map((item) {
-      final Map<String, dynamic> cleanOrderMap = _deepCastMap(item as Map);
-      return OrderModel.fromMap(cleanOrderMap);
+      final Map<String, dynamic> orderMap = Map<String, dynamic>.from(
+        item as Map,
+      );
+      return OrderModel.fromMap(orderMap);
     }).toList();
   }
 
@@ -38,8 +40,6 @@ class HiveOrderService {
     await _box.put('order_history', mapList);
   }
 
-  
-
   static Future<void> closeUserBox() async {
     if (_activeUserId != null) {
       final String name = _boxName(_activeUserId!);
@@ -50,24 +50,24 @@ class HiveOrderService {
     }
   }
 
-  static Map<String, dynamic> _deepCastMap(Map<dynamic, dynamic> dynamicMap) {
-    return dynamicMap.map((key, value) {
-      final String stringKey = key.toString();
+  // static Map<String, dynamic> _deepCastMap(Map<dynamic, dynamic> dynamicMap) {
+  //   return dynamicMap.map((key, value) {
+  //     final String stringKey = key.toString();
 
-      if (value is Map) {
-        return MapEntry(stringKey, _deepCastMap(value));
-      } else if (value is List) {
-        final cleanedList =
-            value.map((element) {
-              if (element is Map) {
-                return _deepCastMap(element);
-              }
-              return element;
-            }).toList();
-        return MapEntry(stringKey, cleanedList);
-      }
+  //     if (value is Map) {
+  //       return MapEntry(stringKey, _deepCastMap(value));
+  //     } else if (value is List) {
+  //       final cleanedList =
+  //           value.map((element) {
+  //             if (element is Map) {
+  //               return _deepCastMap(element);
+  //             }
+  //             return element;
+  //           }).toList();
+  //       return MapEntry(stringKey, cleanedList);
+  //     }
 
-      return MapEntry(stringKey, value);
-    });
-  }
+  //     return MapEntry(stringKey, value);
+  //   });
+  // }
 }
