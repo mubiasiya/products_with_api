@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
+import 'package:with_api/feature/products/data/cart/logic/bloc/cart_bloc.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
 import 'package:with_api/feature/products/data/presentation/screens/productDetail_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/scaff_msg.dart';
@@ -134,7 +134,7 @@ class CategoryProductCard extends StatelessWidget {
                         ),
                       ),
 
-                      BlocBuilder<CartCubit, CartState>(
+                      BlocBuilder<CartBloc, CartState>(
                         builder: (context, state) {
                           final bool isProductInCart = state.cart.items.any(
                             (element) =>
@@ -145,13 +145,17 @@ class CategoryProductCard extends StatelessWidget {
                           return GestureDetector(
                             onTap: () {
                               if (isProductInCart) {
-                                context.read<CartCubit>().onCartItemDelete(
-                                  CartItem(product: product, qty: 1),
+                                context.read<CartBloc>().add(
+                                  DeleteCartItemEvent(
+                                    CartItem(product: product, qty: 1),
+                                  ),
                                 );
                                 scaff_msg('Removed from cart !', context);
                               } else {
-                                context.read<CartCubit>().onCartAdd(
-                                  CartItem(product: product, qty: 1),
+                                context.read<CartBloc>().add(
+                                  AddToCartEvent(
+                                    CartItem(product: product, qty: 1),
+                                  ),
                                 );
                                 scaff_msg('Added to cart !', context);
                               }

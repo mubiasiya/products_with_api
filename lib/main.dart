@@ -11,7 +11,7 @@ import 'package:with_api/feature/products/data/auth/presentation/regist_screen.d
 import 'package:with_api/feature/products/data/auth/services/api/auth_service.dart';
 import 'package:with_api/feature/products/data/auth/services/shared_pref/auth_shared.dart';
 import 'package:with_api/feature/products/data/cart/hive/cart_service.dart';
-import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
+import 'package:with_api/feature/products/data/cart/logic/bloc/cart_bloc.dart';
 import 'package:with_api/feature/products/data/cart/presentation/cart_screen.dart';
 import 'package:with_api/feature/products/data/orders/hive/order_service.dart';
 import 'package:with_api/feature/products/data/orders/logic/bloc/order_bloc.dart';
@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
           create: (context) => ProductBloc(ProductRepository(ApiService())),
         ),
         BlocProvider(create: (context) => WishlistCubit()),
-        BlocProvider(create: (context) => CartCubit()),
+        BlocProvider(create: (context) => CartBloc()),
         BlocProvider(create: (context) => AddressBloc()),
         BlocProvider(create: (context) => OrderBloc()),
       ],

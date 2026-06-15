@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
+import 'package:with_api/feature/products/data/cart/logic/bloc/cart_bloc.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
 import 'package:with_api/feature/products/data/presentation/screens/related_product_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
@@ -253,7 +253,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           builder: (context, state) {
                             if (state is ProductLoaded) {
                               if (state.isLoadingRelated) {
-                                return  Loading();
+                                return Loading();
                               }
 
                               if (state.relatedProducts.isEmpty) {
@@ -321,7 +321,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             ],
           ),
           const SizedBox(width: 24),
-          BlocBuilder<CartCubit, CartState>(
+          BlocBuilder<CartBloc, CartState>(
             builder: (context, state) {
               bool isProductInCart = state.cart.items.any(
                 (element) => element.product.id == widget.product.id,
@@ -343,8 +343,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                       if (isProductInCart) {
                         Navigator.pushNamed(context, '/cart');
                       } else {
-                        context.read<CartCubit>().onCartAdd(
-                          CartItem(product: widget.product, qty: 1),
+                        context.read<CartBloc>().add(
+                          AddToCartEvent(
+                            CartItem(product: widget.product, qty: 1),
+                          ),
                         );
                         scaff_msg('Added to cart !', context);
                       }

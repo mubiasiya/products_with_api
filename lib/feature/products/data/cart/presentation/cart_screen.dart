@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
+import 'package:with_api/feature/products/data/cart/logic/bloc/cart_bloc.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
 import 'package:with_api/feature/products/data/cart/presentation/cart_bottom.dart';
 import 'package:with_api/feature/products/data/presentation/screens/checkout_screen.dart';
@@ -34,7 +34,7 @@ class _CartScreenState extends State<CartScreen> {
           }),
         ],
       ),
-      body: BlocBuilder<CartCubit, CartState>(
+      body: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
           if (state is CartInitial) {
             return Loading();
@@ -129,13 +129,14 @@ class _CartScreenState extends State<CartScreen> {
                         constraints: const BoxConstraints(),
                         padding: const EdgeInsets.all(4),
                         onPressed: () {
-                          context.read<CartCubit>().onCartItemDelete(item);
+                         
+                          context.read<CartBloc>().add(DeleteCartItemEvent(item));
                         },
                         icon: const Icon(
                           Icons.clear,
                           color: Colors.black,
                           size:
-                              16, // Slightly reduced to fit nicely inside a small circle
+                              16, 
                         ),
                       ),
                     ),
@@ -190,10 +191,8 @@ class _CartScreenState extends State<CartScreen> {
                             color: Colors.black,
                           ),
                           onPressed: () {
-                            context.read<CartCubit>().onCartUpdateCount(
-                              item,
-                              item.qty - 1,
-                            );
+                          
+                            context.read<CartBloc>().add(UpdateCartItemCountEvent(item, item.qty-1));
                           },
                         ),
 
@@ -218,10 +217,8 @@ class _CartScreenState extends State<CartScreen> {
                             color: Colors.black,
                           ),
                           onPressed: () {
-                            context.read<CartCubit>().onCartUpdateCount(
-                              item,
-                              item.qty + 1,
-                            );
+                           
+                            context.read<CartBloc>().add(UpdateCartItemCountEvent(item, item.qty+1));
                           },
                         ),
                       ],

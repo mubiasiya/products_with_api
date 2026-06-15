@@ -5,14 +5,23 @@ import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart'
 import 'package:with_api/feature/products/data/cart/models/cart_model.dart';
 
 
+part 'cart_event.dart';
 part 'cart_state.dart';
 
-class CartCubit extends Cubit<CartState> {
-  CartCubit() : super(CartEmpty(cart: CartModel(items: []))) {
-    loadInitialCart();
+class CartBloc extends Bloc<CartEvent, CartState> {
+  CartBloc() : super(CartInitial(cart: CartModel(items: []))) {
+   
+    on<LoadCartEvent>(_onLoadCart);
+    on<AddToCartEvent>(_onAddToCart);
+    on<UpdateCartItemCountEvent>(_onUpdateCartItemCount);
+    on<DeleteCartItemEvent>(_onDeleteCartItemEvent);
+    on<ClearCartEvent>(_onClearCart);
+
+   
+    add(LoadCartEvent());
   }
 
-  void loadInitialCart() {
+  void _onLoadCart(LoadCartEvent event, Emitter<CartState> emit) {
     final savedCart = HiveCartService.getCart();
 
     if (savedCart.items.isNotEmpty) {
@@ -22,11 +31,11 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  void onCartAdd(CartItem item) {
+  void _onAddToCart(AddToCartEvent event, Emitter<CartState> emit) {
     final List<CartItem> currentItems = List.from(state.cart.items);
 
     final int existingIndex = currentItems.indexWhere(
-      (element) => element.product.id == item.product.id,
+      (element) => element.product.id == event.item.product.id,
     );
 
     if (existingIndex >= 0) {
@@ -35,38 +44,47 @@ class CartCubit extends Cubit<CartState> {
         qty: currentItems[existingIndex].qty + 1,
       );
     } else {
-      currentItems.add(item);
+      currentItems.add(event.item);
     }
 
     final updatedCart = CartModel(items: currentItems);
     HiveCartService.saveCart(updatedCart);
 
-    emit(CartUpdated(cart: CartModel(items: currentItems)));
+    emit(CartUpdated(cart: updatedCart));
   }
 
-  void onCartUpdateCount(CartItem item, int count) {
-    if (count == 0) {
-      return;
-    }
+  void _onUpdateCartItemCount(
+    UpdateCartItemCountEvent event,
+    Emitter<CartState> emit,
+  ) {
+    if (event.count == 0) return;
 
     final List<CartItem> currentItems = List.from(state.cart.items);
 
-    final int Index = currentItems.indexWhere(
-      (element) => element.product.id == item.product.id,
+    final int index = currentItems.indexWhere(
+      (element) => element.product.id == event.item.product.id,
     );
 
-    currentItems[Index] = CartItem(product: item.product, qty: count);
+    if (index >= 0) {
+      currentItems[index] = CartItem(
+        product: event.item.product,
+        qty: event.count,
+      );
 
-    final updatedCart = CartModel(items: currentItems);
-    HiveCartService.saveCart(updatedCart);
+      final updatedCart = CartModel(items: currentItems);
+      HiveCartService.saveCart(updatedCart);
 
-    emit(CartUpdated(cart: CartModel(items: currentItems)));
+      emit(CartUpdated(cart: updatedCart));
+    }
   }
 
-  void onCartItemDelete(CartItem item) {
+  void _onDeleteCartItemEvent(
+    DeleteCartItemEvent event,
+    Emitter<CartState> emit,
+  ) {
     final List<CartItem> currentItems = List.from(state.cart.items);
     currentItems.removeWhere(
-      (element) => element.product.id == item.product.id,
+      (element) => element.product.id == event.item.product.id,
     );
 
     if (currentItems.isEmpty) {
@@ -78,12 +96,11 @@ class CartCubit extends Cubit<CartState> {
     final updatedCart = CartModel(items: currentItems);
     HiveCartService.saveCart(updatedCart);
 
-    emit(CartUpdated(cart: CartModel(items: currentItems)));
+    emit(CartUpdated(cart: updatedCart));
   }
 
-  void onCartClear() {
+  void _onClearCart(ClearCartEvent event, Emitter<CartState> emit) {
     HiveCartService.clearCart();
-
     emit(CartEmpty(cart: CartModel(items: [])));
   }
 }

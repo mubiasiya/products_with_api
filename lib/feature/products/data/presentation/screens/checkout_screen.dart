@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:with_api/feature/products/data/address/logic/bloc/address_bloc.dart';
 import 'package:with_api/feature/products/data/address/models/address_model.dart';
-import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
+import 'package:with_api/feature/products/data/cart/logic/bloc/cart_bloc.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_model.dart';
 import 'package:with_api/feature/products/data/orders/logic/bloc/order_bloc.dart';
 import 'package:with_api/feature/products/data/orders/models/order_model.dart';
@@ -392,8 +392,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           _buildSummaryRow(
             'VAT (5%)',
             ' \$ ${widget.vat.toStringAsFixed(2)}',
-            isDiscount:
-                false, 
+            isDiscount: false,
           ),
           _buildSummaryRow('Shipping Fee', '\$ 5.00'),
           const Padding(
@@ -532,10 +531,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               _paymentMethods[_selectedPaymentIndex]['name'],
                           deliveryAddress: chosenAddress,
                         );
-                         
-                         context.read<OrderBloc>().add(SaveOrderEvent(newOrder));
-                        context.read<CartCubit>().onCartClear();
-                        
+
+                        context.read<OrderBloc>().add(SaveOrderEvent(newOrder));
+
+                        context.read<CartBloc>().add(ClearCartEvent());
 
                         Navigator.push(
                           context,

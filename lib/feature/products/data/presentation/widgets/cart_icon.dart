@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
+import 'package:with_api/feature/products/data/cart/logic/bloc/cart_bloc.dart';
+
 
 class CartIcon extends StatelessWidget {
   const CartIcon({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CartCubit, CartState>(
+    return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
         int totalItems = 0;
         if (state is CartUpdated) {

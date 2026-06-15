@@ -1,14 +1,11 @@
-part of 'cart_cubit.dart';
+part of 'cart_bloc.dart';
 
 @immutable
-// ignore: must_be_immutable
 sealed class CartState {
   final CartModel cart;
-
   CartState({required this.cart});
 }
 
-// ignore: must_be_immutable
 final class CartInitial extends CartState {
   CartInitial({required super.cart});
 }

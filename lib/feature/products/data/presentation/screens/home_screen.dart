@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:with_api/feature/products/data/address/logic/bloc/address_bloc.dart';
-import 'package:with_api/feature/products/data/cart/logic/cubit/cart_cubit.dart';
+import 'package:with_api/feature/products/data/cart/logic/bloc/cart_bloc.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
 import 'package:with_api/feature/products/data/presentation/screens/banner.dart';
 import 'package:with_api/feature/products/data/presentation/screens/category_by_products_screen.dart';
@@ -623,8 +623,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   const SizedBox(width: 8),
                                   GestureDetector(
                                     onTap: () {
-                                      context.read<CartCubit>().onCartAdd(
-                                        CartItem(product: product, qty: 1),
+                                      context.read<CartBloc>().add(
+                                        AddToCartEvent(
+                                          CartItem(product: product, qty: 1),
+                                        ),
                                       );
                                       scaff_msg('Added to cart', context);
                                     },
