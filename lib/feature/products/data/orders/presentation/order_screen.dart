@@ -214,9 +214,8 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
 
              
               ...order.items.map((orderItem) {
-                final product = orderItem.product; // Extract product model
-                final quantity = orderItem.qty; // Extract quantity
-
+                final product = orderItem.product; 
+                final quantity = orderItem.qty;
                 return Container(
                   margin: const EdgeInsets.only(bottom: 8, left: 28),
                   padding: const EdgeInsets.all(8),

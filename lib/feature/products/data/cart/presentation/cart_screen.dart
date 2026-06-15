@@ -118,13 +118,13 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   Positioned(
                     top:
-                        -20, // Changed from -26 to keep it inside the clickable area
-                    right: 60, // Adjusted to sit nicely in the corner
+                        -20, 
+                    right: 60,
                     child: CircleAvatar(
                       radius:
-                          16, // Added explicit radius to keep the circle tight
+                          16, 
                       backgroundColor:
-                          Colors.grey[200], // Fixed: 200 instead of 150
+                          Colors.grey[200], 
                       child: IconButton(
                         constraints: const BoxConstraints(),
                         padding: const EdgeInsets.all(4),
@@ -322,5 +322,5 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  // Widget cartProductDetails({required ProductModel product}) {}
+ 
 }
