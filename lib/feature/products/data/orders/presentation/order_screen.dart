@@ -30,6 +30,7 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
       ),
       body: BlocBuilder<OrderBloc, OrderState>(
         builder: (context, state) {
+          print("Current Order UI State: $state");
           if (state is OrderInitial) {
             return Loading();
           }
@@ -106,8 +107,7 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
       'MMM dd, yyyy • hh:mm a',
     ).format(order.dateTime);
 
-    // Calculate total unique items vs total bulk items if needed
-    // Using order.items.length here matches your original design layout.
+    
     final int itemLength = order.items.isEmpty ? 0 : order.items.length;
 
     return Container(
@@ -212,7 +212,7 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
               ),
               const SizedBox(height: 8),
 
-              // Maps over the OrderItemModel list to build the rows
+             
               ...order.items.map((orderItem) {
                 final product = orderItem.product; // Extract product model
                 final quantity = orderItem.qty; // Extract quantity
@@ -265,7 +265,7 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                                     color: Color(0xFF6E6E73),
                                   ),
                                 ),
-                                // Displays the actual item quantity
+                              
                                 Text(
                                   'Qty: x$quantity',
                                   style: const TextStyle(

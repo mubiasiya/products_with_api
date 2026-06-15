@@ -6,4 +6,5 @@ class ApiEndpoints {
  
   static const String products = "${ApiConfig.baseUrl}/products";
   static const String categories = "${ApiConfig.baseUrl}/categories";
+  static const String profile = "${ApiConfig.baseUrl}/auth/profile";
 }

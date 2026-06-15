@@ -39,17 +39,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         password: event.password,
       );
 
-      final token = await _authRepository.loginUser(
+      final userId = await _authRepository.loginUser(
         email: event.email,
         password: event.password,
       );
 
       await PreferenceService.saveLoginDetails(
-        token: token,
+        id: userId,
         email: event.email,
       );
 
-      emit(AuthAuthenticated(token));
+      emit(AuthAuthenticated(userId));
     } catch (e) {
       emit(AuthError(e.toString().replaceAll('Exception: ', '')));
     }
@@ -61,17 +61,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoading());
     try {
-      final token = await _authRepository.loginUser(
+      final userId = await _authRepository.loginUser(
         email: event.email,
         password: event.password,
       );
       await PreferenceService.saveLoginDetails(
-        token: token,
+        id: userId,
         email: event.email,
       );
 
-      emit(AuthAuthenticated(token));
+      emit(AuthAuthenticated(userId));
     } catch (e) {
+      print(e);
       emit(AuthError(e.toString().replaceAll('Exception: ', '')));
     }
   }

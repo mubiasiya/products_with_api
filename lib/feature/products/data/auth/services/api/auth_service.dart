@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:with_api/feature/core/constants/api_constants.dart';
+import 'package:with_api/feature/core/constants/api_endPoints.dart';
 
 class AuthRepository {
   Future<String> registerUser({
@@ -86,9 +87,10 @@ class AuthRepository {
       }
 
       final loginData = body['data']['login'];
-      print('token');
-      print(loginData['access_token'].toString());
-      return loginData['access_token'].toString();
+
+      final accessToken = loginData['access_token'].toString();
+
+      return fetchUserId(accessToken);
     } else {
       throw Exception(
         'Server communication error: HTTP ${response.statusCode}',
@@ -133,5 +135,24 @@ class AuthRepository {
       throw Exception('Server lookup error: HTTP ${response.statusCode}');
     }
   }
-}
 
+  Future<String> fetchUserId(String accessToken) async {
+    final url = Uri.parse(ApiEndpoints.profile);
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final body = jsonDecode(response.body);
+
+      return body['id'].toString();
+    } else {
+      throw Exception('Failed to fetch profile ID');
+    }
+  }
+}

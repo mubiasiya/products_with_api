@@ -1,7 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:with_api/feature/products/data/orders/models/order_model.dart';
 
-
 class HiveOrderService {
   static String? _activeUserId;
 
@@ -22,14 +21,15 @@ class HiveOrderService {
   static List<OrderModel> getOrders() {
     final List<dynamic> rawOrders =
         _box.get('order_history', defaultValue: []) ?? [];
+
     return rawOrders.map((item) {
-      return OrderModel.fromMap(Map<String, dynamic>.from(item as Map));
+      final Map<String, dynamic> cleanOrderMap = _deepCastMap(item as Map);
+      return OrderModel.fromMap(cleanOrderMap);
     }).toList();
   }
 
   static Future<void> saveOrder(OrderModel newOrder) async {
     final List<OrderModel> currentOrders = getOrders();
-
     currentOrders.insert(0, newOrder);
 
     final List<Map<String, dynamic>> mapList =
@@ -37,6 +37,8 @@ class HiveOrderService {
 
     await _box.put('order_history', mapList);
   }
+
+  
 
   static Future<void> closeUserBox() async {
     if (_activeUserId != null) {
@@ -46,5 +48,26 @@ class HiveOrderService {
       }
       _activeUserId = null;
     }
+  }
+
+  static Map<String, dynamic> _deepCastMap(Map<dynamic, dynamic> dynamicMap) {
+    return dynamicMap.map((key, value) {
+      final String stringKey = key.toString();
+
+      if (value is Map) {
+        return MapEntry(stringKey, _deepCastMap(value));
+      } else if (value is List) {
+        final cleanedList =
+            value.map((element) {
+              if (element is Map) {
+                return _deepCastMap(element);
+              }
+              return element;
+            }).toList();
+        return MapEntry(stringKey, cleanedList);
+      }
+
+      return MapEntry(stringKey, value);
+    });
   }
 }

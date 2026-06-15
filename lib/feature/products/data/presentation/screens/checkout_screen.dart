@@ -393,7 +393,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'VAT (5%)',
             ' \$ ${widget.vat.toStringAsFixed(2)}',
             isDiscount:
-                false, // Set to false since VAT adds to price, keeping text normal color
+                false, 
           ),
           _buildSummaryRow('Shipping Fee', '\$ 5.00'),
           const Padding(
@@ -532,9 +532,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               _paymentMethods[_selectedPaymentIndex]['name'],
                           deliveryAddress: chosenAddress,
                         );
-
+                         
+                         context.read<OrderBloc>().add(SaveOrderEvent(newOrder));
                         context.read<CartCubit>().onCartClear();
-                        context.read<OrderBloc>().add(SaveOrderEvent(newOrder));
+                        
 
                         Navigator.push(
                           context,

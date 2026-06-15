@@ -34,12 +34,15 @@ class ProductModel {
     slug: json["slug"] ?? '',
     price: (json["price"] as num?)?.toDouble() ?? 0.0,
     description: json["description"] ?? '',
-    category: Category.fromJson(json["category"] ?? {}),
+    category: Category.fromJson(
+      Map<String, dynamic>.from(json["category"] as Map? ?? {}),
+    ),
     images:
         json["images"] != null
             ? List<String>.from(json["images"].map((x) => x.toString()))
             : [],
   );
+  
 
   Map<String, dynamic> toJson() => {
     "id": id,
@@ -51,5 +54,3 @@ class ProductModel {
     "images": List<dynamic>.from(images.map((x) => x)),
   };
 }
-
-

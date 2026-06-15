@@ -5,21 +5,21 @@ class PreferenceService {
   PreferenceService._();
 
   static const String _keyUserId = 'user_id';
-  static const String _tokenKey = "auth_token";
+  // static const String _tokenKey = "auth_token";
   static const String _isLoggedInKey = "is_logged_in";
   static const String _emailKey = "user_email";
 
   static Future<void> saveLoginDetails({
-    required String token,
+    required String id,
     required String email,
   }) async {
     
-    final String generatedUserId = 'usr_$email';
+    // final String generatedUserId = 'usr_$email';
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     
     
-    await prefs.setString(_keyUserId, generatedUserId);
-    await prefs.setString(_tokenKey, token);
+    await prefs.setString(_keyUserId, id);
+    // await prefs.setString(_tokenKey, id);
     await prefs.setBool(_isLoggedInKey, true);
     await prefs.setString(_emailKey, email.trim().toLowerCase());
   }
@@ -39,14 +39,14 @@ class PreferenceService {
     return prefs.getString(_keyUserId) ?? '';
   }
 
-  static Future<String> getToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_tokenKey)!;
-  }
+  // static Future<String> getToken() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   return prefs.getString(_tokenKey)!;
+  // }
 
   static Future<void> clearAuthData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_tokenKey);
+    await prefs.remove(_keyUserId);
     await prefs.remove(_emailKey);
     await prefs.setBool(_isLoggedInKey, false);
   }
