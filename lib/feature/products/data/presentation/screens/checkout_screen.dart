@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:with_api/feature/products/data/address/logic/bloc/address_bloc.dart';
 import 'package:with_api/feature/products/data/address/models/address_model.dart';
 import 'package:with_api/feature/products/data/cart/logic/bloc/cart_bloc.dart';
@@ -73,7 +74,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               'Deliver To',
               buttonText: '+ Add New',
               onTap: () {
-                Navigator.pushNamed(context, '/address');
+                context.push('/address');
               },
             ),
 

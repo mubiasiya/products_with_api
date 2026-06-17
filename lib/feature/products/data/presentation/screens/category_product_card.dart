@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:with_api/feature/products/data/cart/logic/bloc/cart_bloc.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
-import 'package:with_api/feature/products/data/presentation/screens/productDetail_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/scaff_msg.dart';
 import 'package:with_api/feature/products/data/products/models/product_model.dart';
 import 'package:with_api/feature/products/data/wishlist/logic/bloc/wishlist_bloc.dart';
-
 
 class CategoryProductCard extends StatelessWidget {
   final ProductModel product;
@@ -17,12 +16,7 @@ class CategoryProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductDetails(product: product),
-          ),
-        );
+        context.push('/details', extra: product);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -74,7 +68,9 @@ class CategoryProductCard extends StatelessWidget {
                         }
                         return GestureDetector(
                           onTap: () {
-                            context.read<WishlistBloc>().add(ToggleWishlistEvent(product));
+                            context.read<WishlistBloc>().add(
+                              ToggleWishlistEvent(product),
+                            );
                           },
                           child: Container(
                             padding: const EdgeInsets.all(6),

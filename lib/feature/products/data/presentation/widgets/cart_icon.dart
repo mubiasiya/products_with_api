@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:with_api/feature/products/data/cart/logic/bloc/cart_bloc.dart';
 
 
@@ -25,7 +26,7 @@ class CartIcon extends StatelessWidget {
                 color: Colors.white,
               ),
               onPressed: () {
-                Navigator.pushNamed(context, '/cart');
+               context.push('/cart');
               },
             ),
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:with_api/feature/products/data/cart/logic/bloc/cart_bloc.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
 import 'package:with_api/feature/products/data/cart/presentation/cart_bottom.dart';
 import 'package:with_api/feature/products/data/presentation/screens/checkout_screen.dart';
-import 'package:with_api/feature/products/data/presentation/screens/productDetail_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/icon_button.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
 
@@ -22,15 +22,15 @@ class _CartScreenState extends State<CartScreen> {
       appBar: AppBar(
         title: Text('My Cart'),
         leading: IconButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
           icon: Icon(Icons.arrow_back_ios_new, color: Colors.white),
         ),
         actions: [
           iconButton(Icons.favorite_border, () {
-            Navigator.pushNamed(context, '/wishlist');
+            context.push('/wishlist');
           }),
           iconButton(Icons.person, () {
-            Navigator.pushNamed(context, '/account');
+            context.push('/account');
           }),
         ],
       ),
@@ -84,12 +84,8 @@ class _CartScreenState extends State<CartScreen> {
   Widget _buildCartItemCard(BuildContext context, CartItem item) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductDetails(product: item.product),
-          ),
-        );
+      
+        context.push('/details', extra: item.product);
       },
       child: Card(
         margin: const EdgeInsets.only(bottom: 14),
@@ -117,26 +113,23 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   Positioned(
-                    top:
-                        -20, 
+                    top: -20,
                     right: 60,
                     child: CircleAvatar(
-                      radius:
-                          16, 
-                      backgroundColor:
-                          Colors.grey[200], 
+                      radius: 16,
+                      backgroundColor: Colors.grey[200],
                       child: IconButton(
                         constraints: const BoxConstraints(),
                         padding: const EdgeInsets.all(4),
                         onPressed: () {
-                         
-                          context.read<CartBloc>().add(DeleteCartItemEvent(item));
+                          context.read<CartBloc>().add(
+                            DeleteCartItemEvent(item),
+                          );
                         },
                         icon: const Icon(
                           Icons.clear,
                           color: Colors.black,
-                          size:
-                              16, 
+                          size: 16,
                         ),
                       ),
                     ),
@@ -191,8 +184,9 @@ class _CartScreenState extends State<CartScreen> {
                             color: Colors.black,
                           ),
                           onPressed: () {
-                          
-                            context.read<CartBloc>().add(UpdateCartItemCountEvent(item, item.qty-1));
+                            context.read<CartBloc>().add(
+                              UpdateCartItemCountEvent(item, item.qty - 1),
+                            );
                           },
                         ),
 
@@ -217,8 +211,9 @@ class _CartScreenState extends State<CartScreen> {
                             color: Colors.black,
                           ),
                           onPressed: () {
-                           
-                            context.read<CartBloc>().add(UpdateCartItemCountEvent(item, item.qty+1));
+                            context.read<CartBloc>().add(
+                              UpdateCartItemCountEvent(item, item.qty + 1),
+                            );
                           },
                         ),
                       ],
@@ -321,6 +316,4 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
-
- 
 }

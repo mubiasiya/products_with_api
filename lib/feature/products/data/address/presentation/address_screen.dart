@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:with_api/feature/products/data/address/logic/bloc/address_bloc.dart';
 import 'package:with_api/feature/products/data/address/models/address_model.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/back_button.dart';
@@ -297,7 +298,7 @@ class _AddressScreenState extends State<AddressScreen> {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () =>context.pop(),
                 child: const Text('Cancel'),
               ),
               TextButton(
@@ -305,7 +306,7 @@ class _AddressScreenState extends State<AddressScreen> {
                   context.read<AddressBloc>().add(
                     DeleteAddressEvent(addressId),
                   );
-                  Navigator.pop(context);
+                context.pop();
                 },
                 style: TextButton.styleFrom(
                   foregroundColor: Theme.of(context).colorScheme.error,
@@ -410,7 +411,7 @@ class _AddressFormWidgetState extends State<_AddressFormWidget> {
         bloc.add(UpdateAddressEvent(updatedAddress));
       }
 
-      if (mounted) Navigator.pop(context);
+      if (mounted) context.pop();
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:with_api/feature/products/data/address/hive/address_hive.dart';
 import 'package:with_api/feature/products/data/address/logic/bloc/address_bloc.dart';
 import 'package:with_api/feature/products/data/auth/logic/bloc/auth_bloc.dart';
@@ -85,11 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
               }
 
               if (context.mounted) {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  '/home',
-                  (route) => false,
-                );
+               
+                context.go('/home');
               }
             }
           },
@@ -227,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Center(
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, '/register');
+                         context.push('/register');
                         },
                         child: RichText(
                           text: TextSpan(

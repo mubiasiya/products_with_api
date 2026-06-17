@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatefulWidget {
   final bool isLoggedIn;
@@ -45,10 +46,8 @@ class _SplashScreenState extends State<SplashScreen>
    
     await Future.delayed(const Duration(seconds: 3));
     if (mounted) {
-      Navigator.pushReplacementNamed(
-        context,
-        widget.isLoggedIn ? '/home' : '/login',
-      );
+     
+      context.push('/home');
     }
   }
 

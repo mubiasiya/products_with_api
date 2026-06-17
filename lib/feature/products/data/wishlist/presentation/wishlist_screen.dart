@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/cart_icon.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/icon_button.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
@@ -16,13 +17,14 @@ class WishlistScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('My Wishlist'),
         leading: IconButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
           icon: Icon(Icons.arrow_back_ios_new, color: Colors.white),
         ),
         actions: [
           CartIcon(),
           iconButton(Icons.person, () {
-            Navigator.pushNamed(context, '/account');
+           
+            context.push('/account');
           }),
         ],
       ),

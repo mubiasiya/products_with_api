@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:with_api/feature/products/data/auth/logic/bloc/auth_bloc.dart';
 import 'package:with_api/feature/products/data/auth/logic/bloc/auth_event.dart';
 import 'package:with_api/feature/products/data/auth/logic/bloc/auth_state.dart';
@@ -61,11 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             if (state is AuthAuthenticated) {
               scaff_msg('Account successfully created!', context);
 
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/login',
-                (route) => false,
-              );
+              context.go('/login');
             }
           },
           builder: (context, state) {
@@ -268,7 +265,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Center(
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, '/login');
+                        context.push('/login');
                         },
                         child: RichText(
                           text: TextSpan(

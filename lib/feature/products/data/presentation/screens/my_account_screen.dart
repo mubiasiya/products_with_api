@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:with_api/feature/products/data/address/hive/address_hive.dart';
 import 'package:with_api/feature/products/data/auth/services/shared_pref/auth_shared.dart';
 import 'package:with_api/feature/products/data/cart/hive/cart_service.dart';
@@ -23,9 +24,7 @@ class AccountScreen extends StatelessWidget {
       await HiveOrderService.closeUserBox();
 
       if (context.mounted) {
-        Navigator.of(
-          context,
-        ).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+        context.go('/login');
       }
     } catch (e) {
       debugPrint("Error during logout sequence: $e");
@@ -67,7 +66,7 @@ class AccountScreen extends StatelessWidget {
                       icon: Icons.shopping_bag_outlined,
                       title: 'My Orders',
                       onTap: () {
-                        Navigator.pushNamed(context, '/orders');
+                        context.push('/orders');
                       },
                     ),
                     _buildDivider(),
@@ -75,7 +74,7 @@ class AccountScreen extends StatelessWidget {
                       icon: Icons.favorite_border,
                       title: 'Wishlist',
                       onTap: () {
-                        Navigator.pushNamed(context, '/wishlist');
+                        context.push('/wishlist');
                       },
                     ),
                     _buildDivider(),
@@ -88,7 +87,7 @@ class AccountScreen extends StatelessWidget {
                       icon: Icons.location_on,
                       title: 'Saved addresses',
                       onTap: () {
-                        Navigator.pushNamed(context, '/address');
+                        context.push('/address');
                       },
                     ),
                   ],

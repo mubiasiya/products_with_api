@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:with_api/feature/products/data/presentation/screens/productDetail_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:with_api/feature/products/data/products/models/product_model.dart';
-
 
 Widget buildRelatedProductsSection(
   BuildContext context,
@@ -39,13 +38,7 @@ Widget buildRelatedProductsSection(
 
             return GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProductDetails(product: product),
-                  ),
-                );
-               
+                context.push('/details', extra: product);
               },
               child: Container(
                 width: 140,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:with_api/feature/products/data/presentation/screens/category_product_card.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
 import 'package:with_api/feature/products/data/products/logic/bloc/product_bloc.dart';
@@ -43,7 +44,7 @@ class _ProductsByCategoryPageState extends State<ProductsByCategoryPage> {
             color: Colors.black,
             size: 20,
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () =>context.pop(),
         ),
         title: Text(
           widget.categoryName,

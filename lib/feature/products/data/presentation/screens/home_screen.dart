@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:with_api/feature/products/data/address/logic/bloc/address_bloc.dart';
 import 'package:with_api/feature/products/data/cart/logic/bloc/cart_bloc.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
 import 'package:with_api/feature/products/data/presentation/screens/banner.dart';
 import 'package:with_api/feature/products/data/presentation/screens/category_by_products_screen.dart';
-import 'package:with_api/feature/products/data/presentation/screens/productDetail_screen.dart';
-import 'package:with_api/feature/products/data/presentation/screens/search_product_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/cart_icon.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/icon_button.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/loading_screen.dart';
@@ -159,11 +158,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       actions: [
         iconButton(Icons.favorite_border, () {
-          Navigator.pushNamed(context, '/wishlist');
+         context.push('/wishlist');
         }),
         CartIcon(),
         iconButton(Icons.person, () {
-          Navigator.pushNamed(context, '/account');
+       
+          context.push('/account');
         }),
       ],
     );
@@ -191,12 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: TextFormField(
                 readOnly: true,
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ProductScreen(),
-                    ),
-                  );
+                 context.push('/product');
                 },
                 decoration: InputDecoration(
                   prefixIcon: Icon(
@@ -479,11 +474,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
             return GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProductDetails(product: product),
-                  ),
+                
+                context.push(
+                  '/details',
+                  extra: product,
                 );
               },
               child: Container(

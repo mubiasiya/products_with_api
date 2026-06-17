@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:with_api/feature/products/data/cart/logic/bloc/cart_bloc.dart';
 import 'package:with_api/feature/products/data/cart/models/cart_item_model.dart';
 import 'package:with_api/feature/products/data/presentation/screens/related_product_screen.dart';
@@ -58,7 +59,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           child: CircleAvatar(
             backgroundColor: Colors.grey.withOpacity(0.3),
             child: IconButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.pop(),
               icon: const Icon(
                 Icons.arrow_back_ios_new,
                 color: Colors.black,
@@ -341,7 +342,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                     onPressed: () {
                       if (isProductInCart) {
-                        Navigator.pushNamed(context, '/cart');
+                        context.push('/cart');
                       } else {
                         context.read<CartBloc>().add(
                           AddToCartEvent(
