@@ -21,8 +21,6 @@ class AuthRepository {
       }),
     );
 
-    print(response.body);
-
     if (response.statusCode == 200 || response.statusCode == 201) {
       final Map<String, dynamic> body = jsonDecode(response.body);
 
@@ -31,7 +29,7 @@ class AuthRepository {
         throw Exception(errorMessage ?? 'Registration failed');
       }
 
-      print(response.body);
+      // print(response);
 
       return body['id'].toString();
     } else {
@@ -53,7 +51,7 @@ class AuthRepository {
       body: jsonEncode({'email': email, 'password': password}),
     );
 
-    print(response.body);
+    print(response.statusCode);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final Map<String, dynamic> body = jsonDecode(response.body);
@@ -108,7 +106,6 @@ class AuthRepository {
 
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
-      print(body);
 
       return body['id'].toString();
     } else {

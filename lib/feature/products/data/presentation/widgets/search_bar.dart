@@ -4,11 +4,9 @@ import 'package:with_api/feature/products/data/products/logic/bloc/product_bloc.
 import 'package:with_api/feature/products/data/products/logic/bloc/product_event.dart';
 import 'package:with_api/feature/products/data/products/logic/bloc/product_state.dart';
 
-
 Widget Searchbar(TextEditingController search) {
   return BlocConsumer<ProductBloc, ProductState>(
     listenWhen: (previous, current) {
-     
       if (previous is ProductLoaded && current is ProductLoaded) {
         return previous.activeSearchQuery != current.activeSearchQuery;
       }
@@ -20,7 +18,6 @@ Widget Searchbar(TextEditingController search) {
       }
     },
     builder: (context, state) {
-      
       bool showClearButton = false;
       if (state is ProductLoaded) {
         showClearButton = state.activeSearchQuery.isNotEmpty;
@@ -30,10 +27,16 @@ Widget Searchbar(TextEditingController search) {
         padding: const EdgeInsets.all(10),
         child: TextField(
           controller: search,
-          onChanged: (value) {
-          
+          textInputAction: TextInputAction.search,
+          // onChanged: (value) {
+
+          //   context.read<ProductBloc>().add(
+          //     FilterProductsEvent(searchQuery: value),
+          //   );
+          // },
+          onSubmitted: (value) {
             context.read<ProductBloc>().add(
-              FilterProductsEvent(searchQuery: value),
+              FilterProductsEvent(searchQuery: value.trim()),
             );
           },
           decoration: InputDecoration(

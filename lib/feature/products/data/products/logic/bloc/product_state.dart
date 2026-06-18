@@ -12,16 +12,14 @@ class ProductError extends ProductState {
   ProductError(this.message);
 }
 
-// Combine all loaded data into this single state class
 class ProductLoaded extends ProductState {
-  final List<ProductModel> products; // Holds search results
-  final List<ProductModel>
-  relatedProducts; // Holds detail page related products
+  final List<ProductModel> products;
+  final List<ProductModel> relatedProducts;
   final String activeSearchQuery;
   final int? activeMinPrice;
   final int? activeMaxPrice;
   final ProductSortOrder activeSortOrder;
-  final bool isLoadingRelated; // Helpful for detail page spinners
+  final bool isLoadingRelated;
 
   ProductLoaded({
     required this.products,
@@ -33,7 +31,6 @@ class ProductLoaded extends ProductState {
     this.isLoadingRelated = false,
   });
 
-  // CRITICAL: This allows updating related products without losing the search products
   ProductLoaded copyWith({
     List<ProductModel>? products,
     List<ProductModel>? relatedProducts,

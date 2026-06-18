@@ -84,19 +84,6 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.system,
 
         routerConfig: _router,
-        // initialRoute: '/splash',
-
-        // routes: {
-        //   '/splash': (context) => SplashScreen(isLoggedIn: isLoggedIn),
-        //   '/login': (context) => const LoginScreen(),
-        //   '/register': (context) => const RegisterScreen(),
-        //   '/home': (context) => const HomeScreen(),
-        //   '/account': (context) => const AccountScreen(),
-        //   '/wishlist': (context) => const WishlistScreen(),
-        //   '/cart': (context) => const CartScreen(),
-        //   '/address': (context) => const AddressScreen(),
-        //   '/orders': (context) => const MyOrderScreen(),
-        // },
       ),
     );
   }
