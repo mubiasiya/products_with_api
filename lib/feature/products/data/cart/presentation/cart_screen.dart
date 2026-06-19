@@ -84,7 +84,6 @@ class _CartScreenState extends State<CartScreen> {
   Widget _buildCartItemCard(BuildContext context, CartItem item) {
     return GestureDetector(
       onTap: () {
-      
         context.push('/details', extra: item.product);
       },
       child: Card(
@@ -97,39 +96,39 @@ class _CartScreenState extends State<CartScreen> {
             children: [
               Stack(
                 clipBehavior: Clip.none,
-
                 children: [
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.all(6),
-                    child: Image.network(
-                      item.product.images.first,
-                      fit: BoxFit.contain,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12, left: 12),
+                    child: Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.all(6),
+                      child: Image.network(
+                        item.product.images.first,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
+
                   Positioned(
-                    top: -20,
-                    right: 60,
-                    child: CircleAvatar(
-                      radius: 16,
-                      backgroundColor: Colors.grey[200],
-                      child: IconButton(
-                        constraints: const BoxConstraints(),
-                        padding: const EdgeInsets.all(4),
-                        onPressed: () {
-                          context.read<CartBloc>().add(
-                            DeleteCartItemEvent(item),
-                          );
-                        },
-                        icon: const Icon(
+                    top: 0,
+                    left: 0,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        context.read<CartBloc>().add(DeleteCartItemEvent(item));
+                      },
+                      child: CircleAvatar(
+                        radius: 14,
+                        backgroundColor: Colors.grey[200],
+                        child: const Icon(
                           Icons.clear,
                           color: Colors.black,
-                          size: 16,
+                          size: 14,
                         ),
                       ),
                     ),

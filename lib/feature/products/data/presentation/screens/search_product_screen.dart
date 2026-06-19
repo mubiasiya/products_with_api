@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:with_api/feature/products/data/presentation/screens/productDetail_screen.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/bottom_appBar.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/cart_icon.dart';
 import 'package:with_api/feature/products/data/presentation/widgets/error_screen.dart';
@@ -128,7 +127,7 @@ class _ProductScreenState extends State<ProductScreen> {
         maxPrice: _currentMaxPrice.round(),
       ),
     );
-    
+
     super.initState();
   }
 
@@ -151,7 +150,7 @@ class _ProductScreenState extends State<ProductScreen> {
           }),
           CartIcon(),
           iconButton(Icons.person, () {
-             context.push('/account');
+            context.push('/account');
           }),
         ],
       ),
@@ -244,13 +243,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       itemBuilder: (context, index) {
                         final product = productList[index];
                         return productCard(product, () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => ProductDetails(product: product),
-                            ),
-                          );
+                          context.push('/details', extra: product);
                         }, context);
                       },
                     );
