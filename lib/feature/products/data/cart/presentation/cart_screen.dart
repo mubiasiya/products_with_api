@@ -98,10 +98,10 @@ class _CartScreenState extends State<CartScreen> {
                 clipBehavior: Clip.none,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 12, left: 12),
+                    padding: const EdgeInsets.only(top: 0, left: 0),
                     child: Container(
-                      width: 80,
-                      height: 80,
+                      width: 90,
+                      height: 90,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(8),
@@ -115,8 +115,8 @@ class _CartScreenState extends State<CartScreen> {
                   ),
 
                   Positioned(
-                    top: 0,
-                    left: 0,
+                    top: -5,
+                    left: -7,
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
@@ -128,7 +128,7 @@ class _CartScreenState extends State<CartScreen> {
                         child: const Icon(
                           Icons.clear,
                           color: Colors.black,
-                          size: 14,
+                          size: 16,
                         ),
                       ),
                     ),
